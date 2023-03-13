@@ -29,10 +29,10 @@ export default function Content() {
   const percentage = (timeLeft / 604800) * 100; // 604800 seconds in 7 days
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen bg-gray-900 text-white">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-900 text-white">
       {timeLeft > 0 ? (
         <div className="text-center">
-          <h1 className="text-3xl font-bold mb-4">Coming Soon!</h1>
+          <h1 className="text-4xl font-bold mb-8">Coming Soon!</h1>
           <div className="flex justify-center">
             <div className="flex flex-col items-center mr-4">
               <CircularProgressbar value={days} maxValue={7} text={`${days}d`} />
@@ -51,25 +51,21 @@ export default function Content() {
               <p className="text-sm font-semibold mt-2">Seconds</p>
             </div>
           </div>
-          <div className="mt-8">
-            <button className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition-all duration-300">
-              Discord
+          <div className="mt-10">
+            <button className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+              Notify Me
             </button>
           </div>
         </div>
       ) : (
         <div className="text-center">
-          <h1 className="text-3xl font-bold mb-4">Welcome!</h1>
-          <p className="text-xl font-semibold">It's time to get started!</p>
-          <div className="mt-8">
-            <button className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2focus:ring-blue-400 focus:ring-opacity-75 transition-all duration-300"
-            >
-              Start
-            </button>
-          </div>
+          <h1 className="text-4xl font-bold mb-8">We are Live!</h1>
+          <p className="text-xl mb-8">Thank you for your patience.</p>
+          <button className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+            Visit Website
+          </button>
         </div>
       )}
     </div>
   );
-}
-
+      }
