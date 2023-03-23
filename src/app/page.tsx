@@ -11,8 +11,8 @@ export default function Home() {
     
     <main className={styles.main}>
       <Header />
-      {/* <ContentTemp /> */}
-      <Content />
+      <ContentTemp />
+      {/* <Content /> */}
     </main>
   )
 }
