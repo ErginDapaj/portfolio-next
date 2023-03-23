@@ -4,23 +4,45 @@ import { useEffect, useState } from 'react';
 import Typing from 'react-typing-effect';
 import { FaHome, FaBars, FaTimes } from 'react-icons/fa'
 import { IconContext } from 'react-icons';
+import { motion } from 'framer-motion';
+
 export default function Header() {
   const [isTyping, setIsTyping] = useState(false);
-  const [status, setStatus] = useState('red');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const statusColors = { dnd: 'red', offline: 'grey', online: 'green', idle: 'yellow' };
+  const [status, setStatus] = useState('grey');
   
-  useEffect(() => {
-    setIsTyping(true);
-  }, []);
-
+  async function getStatus() {
+    try {
+      const response = await fetch('https://api.lanyard.rest/v1/users/399911902211473410');
+      if (response.ok) {
+        const json = await response.json();
+        const status = json.data.discord_status as keyof typeof statusColors;
+        const color = statusColors[status] || 'black';
+        setStatus(color);
+        console.log(color);
+      } else {
+        console.error(response.statusText);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  getStatus();
+  useEffect(() => setIsTyping(true), []);
+  
   return (
     <header className="bg-gray-900 text-white py-4">
       <nav className="container mx-auto flex justify-between items-center">
-        <div className="text-xl font-bold">
-          {isTyping && (
-            <Typing speed={150} text={["Ergin's Portfolio"]} />
-          )}
-        </div>
+      <div className="text-xl font-bold">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 9 }}
+  >
+    {isTyping && <Typing speed={150} text={["Ergin's Portfolio"]} />}
+  </motion.div>
+</div>
         <ul className="hidden sm:flex sm:space-x-4">
         <li className="nav-item relative">
             <button className="nav-link font-bold py-2 px-4 border-b-4 border-transparent hover:text-gray-500 hover:border-blue-600 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
