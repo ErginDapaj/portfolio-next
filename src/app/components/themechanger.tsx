@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import { Select } from '@chakra-ui/react';
+// import { Select } from '@chakra-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaintBrush } from '@fortawesome/free-solid-svg-icons';
 
@@ -35,7 +35,7 @@ const ThemeChanger: React.FC<ThemeChangerProps> = ({ onColorChange }) => {
 
   return (
     <div className="flex items-center">
-      <Select
+      {/* <Select
         value={color}
         onChange={handleColorChange}
         bg="white"
@@ -48,7 +48,7 @@ const ThemeChanger: React.FC<ThemeChangerProps> = ({ onColorChange }) => {
             {c.name}
           </option>
         ))}
-      </Select>
+      </Select> */}
       <FontAwesomeIcon icon={faPaintBrush} className="text-gray-600" />
     </div>
   );

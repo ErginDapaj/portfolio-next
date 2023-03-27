@@ -1,11 +1,11 @@
 "use client"
-import Link from "next/link";
 import { useEffect, useState } from 'react';
 import Typing from 'react-typing-effect';
 import { FaHome, FaBars, FaTimes } from 'react-icons/fa'
 import { IconContext } from 'react-icons';
 import { motion } from 'framer-motion';
-
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 export default function Header() {
   const [isTyping, setIsTyping] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,6 +32,7 @@ export default function Header() {
   useEffect(() => setIsTyping(true), []);
   
   return (
+  
     <header className="bg-gray-900 text-white py-4">
       <nav className="container mx-auto flex justify-between items-center">
       <div className="text-xl font-bold">
@@ -52,7 +53,7 @@ export default function Header() {
             </button>
           </li>
           <li className="nav-item relative">
-            <button className="nav-link font-bold py-2 px-4 border-b-4 border-transparent hover:text-gray-500 hover:border-blue-600 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
+            <button  className="nav-link font-bold py-2 px-4 border-b-4 border-transparent hover:text-gray-500 hover:border-blue-600 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
               About
               <span className="absolute bottom-0 left-0 right-0 h-1 bg-white rounded-full transform scale-x-0 origin-left transition-all duration-500"></span>
               <span className="absolute bottom-0 left-0 right-0 h-1 bg-white-600 rounded-full transform scale-x-0 origin-left transition-all duration-700"></span>
