@@ -5,7 +5,7 @@ import { Box, Card, CardContent, CardHeader, List, ListItem, ListItemText, Typog
 import { faReact, faNodeJs, faCss3Alt, faJsSquare, faHtml5, faJs } from '@fortawesome/free-brands-svg-icons';
 import { faDatabase } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import Loader from './loader';
 const MotionTypography = motion(Typography);
 interface Skill {
   name: string;
@@ -29,12 +29,26 @@ const skills: Skill[] = [
 
 export default function Content() {
   const [hoveredSkill, setHoveredSkill] = useState<Skill | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [progress, setProgress] = useState(0)
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setIsLoading(false);
+      setProgress(100);
+    }, 2000);
+
+    return () => clearTimeout(timeoutId);
+  }, []);
   const handleSkillHover = (skill: Skill | null) => {
     setHoveredSkill(skill);
   };
 
   return (
+    <div>
+       {isLoading ? (
+        <Loader progress={progress} />
+      ) : (
     <Box className="p-4 max-w-4xl mx-auto">
       <Card className="mb-8" style={{ backgroundColor: '#1F2937' }}>
         <CardHeader title="About Me" className="text-white" />
@@ -78,5 +92,7 @@ export default function Content() {
         </CardContent>
       </Card>
     </Box>
+      )}
+    </div>
   );
 }
