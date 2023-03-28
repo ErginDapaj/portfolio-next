@@ -1,9 +1,11 @@
 "use client"
 import { Box, Card, CardContent, CardHeader, Typography } from '@material-ui/core';
 import React from 'react';
-
+import Header from '../components/header';
 export default function About() {
   return (
+    <div>
+    <Header />
     <Box className="p-4 max-w-4xl mx-auto">
       <Card className="mb-8" style={{ backgroundColor: '#1F2937' }}>
         <CardHeader title="About Me" className="text-white" />
@@ -17,5 +19,6 @@ export default function About() {
         </CardContent>
       </Card>
     </Box>
+    </div>
   );
 }
