@@ -35,6 +35,13 @@ const projectData: Project[] = [
         link: "https://button.cubeedge.xyz/",
         icon: <FontAwesomeIcon icon={faReact} />,
         image: "https://media.discordapp.net/attachments/510561488369614848/1092856596125732955/image.png",
+    },
+    {
+        name: "Appy Bot",
+        description: "Premium bypassed",
+        link: "https://appybot.xyz/",
+        icon: <FontAwesomeIcon icon={faJs} />,
+        image: "https://media.discordapp.net/attachments/510561488369614848/1092859437691183124/image.png",
     }
 ];
 
