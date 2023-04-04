@@ -29,6 +29,13 @@ const projectData: Project[] = [
         icon: <FontAwesomeIcon icon={faReact} />,
         image: "https://media.discordapp.net/attachments/510561488369614848/1090236226377887834/image.png",
     },
+    {
+        name: "Button Bot",
+        description: "Permission issue",
+        link: "https://button.cubeedge.xyz/",
+        icon: <FontAwesomeIcon icon={faReact} />,
+        image: "https://media.discordapp.net/attachments/510561488369614848/1092856596125732955/image.png",
+    }
 ];
 
 export default function Security() {
