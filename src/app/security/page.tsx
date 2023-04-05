@@ -1,53 +1,38 @@
 "use client"
 import { Box, Card, CardContent, CardHeader, Typography, Modal } from '@material-ui/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '../components/header';
-import { faReact, faNodeJs, faCss3Alt, faJsSquare, faHtml5, faJs, faVuejs } from '@fortawesome/free-brands-svg-icons';
-import { faDatabase } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IconName } from '@fortawesome/fontawesome-svg-core';
 
-interface Project {
+import Loader from '../components/loader';
+import { faCss3Alt, faHtml5, faJs, faJsSquare, faNodeJs, faVuejs, faReact } from '@fortawesome/free-brands-svg-icons';
+import React from 'react';
+interface Security {
+    icon: IconName;
     name: string;
     description: string;
-    link: string;
-    icon: JSX.Element;
     image: string;
+    link: string;
 }
-
-const projectData: Project[] = [
-    {
-        name: "Bots On Discord",
-        description: "Permission issue when replying.",
-        link: "https://bots.ondiscord.xyz/",
-        icon: <FontAwesomeIcon icon={faVuejs} />,
-        image: "https://media.discordapp.net/attachments/510561488369614848/1090236017350553670/image.png",
-    },
-    {
-        name: "Infinity Bots",
-        description: "Permission to delete any review.",
-        link: "https://infinitybots.gg/",
-        icon: <FontAwesomeIcon icon={faReact} />,
-        image: "https://media.discordapp.net/attachments/510561488369614848/1090236226377887834/image.png",
-    },
-    {
-        name: "Button Bot",
-        description: "Permission issue",
-        link: "https://button.cubeedge.xyz/",
-        icon: <FontAwesomeIcon icon={faReact} />,
-        image: "https://media.discordapp.net/attachments/510561488369614848/1092856596125732955/image.png",
-    },
-    {
-        name: "Appy Bot",
-        description: "Premium bypassed",
-        link: "https://appybot.xyz/",
-        icon: <FontAwesomeIcon icon={faJs} />,
-        image: "https://media.discordapp.net/attachments/510561488369614848/1092859437691183124/image.png",
-    }
-];
 
 export default function Security() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [securityData, setSecurityData] = useState<Security[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
+
+    useEffect(() => {
+        async function fetchData() {
+            const res = await fetch('/api/security');
+            const data = await res.json();
+
+            setSecurityData(data);
+            setIsLoading(false)
+        }
+        fetchData();
+
+    }, []);
     const handleModalOpen = () => {
         setIsModalOpen(true);
     };
@@ -55,6 +40,25 @@ export default function Security() {
     const handleModalClose = () => {
         setIsModalOpen(false);
     };
+
+    const getIcon = (iconName: IconName) => {
+        switch (iconName) {
+            case 'react':
+                return <FontAwesomeIcon icon={faReact} />;
+            case 'css3-alt':
+                return <FontAwesomeIcon icon={faCss3Alt} />;
+            case 'js-square':
+                return <FontAwesomeIcon icon={faJsSquare} />;
+            case 'html5':
+                return <FontAwesomeIcon icon={faHtml5} />;
+            case 'js':
+                return <FontAwesomeIcon icon={faJs} />;
+            case 'vuejs':
+                return <FontAwesomeIcon icon={faVuejs} />;
+            default:
+                return null;
+        }
+    }
 
     return (
         <div>
@@ -121,48 +125,52 @@ export default function Security() {
                         </Typography>
                     </div>
                 </Modal>
+                {isLoading ? (
+        <Loader progress={0} />
+      ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-    {projectData.map((project, index) => (
-        <Card key={index} style={{ 
-            background: 'linear-gradient(45deg, #1F2937, #2D3748)',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2), 0 6px 12px rgba(0, 0, 0, 0.2)',
-            borderRadius: '10px',
-            color: '#fff',
-            height: '100%'
-        }}>
-            <CardContent>
-                <div className="flex justify-center">{project.icon}</div>
-                <Typography variant="h5" className="mt-4 mb-2 text-center font-bold">
-                    {project.name}
-                </Typography>
-                <Typography variant="body1" className="text-center">
-                    {project.description}
-                </Typography>
-            </CardContent>
-            <Box mt={2} mb={2} className="flex justify-center">
-                <img src={project.image} alt={`${project.name} screenshot`} style={{ 
-                    maxWidth: '100%',
-                    height: 'auto'
-                }}/>
-            </Box>
-            <CardContent>
-                <Box textAlign="center">
-                    <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-                        style={{ 
-                            textDecoration: 'none'
-                        }}
-                    >
-                        Visit Website
-                    </a>
-                </Box>
-            </CardContent>
-        </Card>
-    ))}
-</div>
+                    {securityData.map((project, index) => (
+                        <Card key={index} style={{
+                            background: 'linear-gradient(45deg, #1F2937, #2D3748)',
+                            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2), 0 6px 12px rgba(0, 0, 0, 0.2)',
+                            borderRadius: '10px',
+                            color: '#fff',
+                            height: '100%'
+                        }}>
+                            <CardContent>
+                                <div className="flex justify-center">{getIcon(project.icon)}</div>
+                                <Typography variant="h5" className="mt-4 mb-2 text-center font-bold">
+                                    {project.name}
+                                </Typography>
+                                <Typography variant="body1" className="text-center">
+                                    {project.description}
+                                </Typography>
+                            </CardContent>
+                            <Box mt={2} mb={2} className="flex justify-center">
+                                <img src={project.image} alt={`${project.name} screenshot`} style={{
+                                    maxWidth: '100%',
+                                    height: 'auto'
+                                }} />
+                            </Box>
+                            <CardContent>
+                                <Box textAlign="center">
+                                    <a
+                                        href={project.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                                        style={{
+                                            textDecoration: 'none'
+                                        }}
+                                    >
+                                        Visit Website
+                                    </a>
+                                </Box>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+                )}
 
             </div>
         </div>

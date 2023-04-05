@@ -23,6 +23,7 @@
     "gsap": "^3.11.4",
     "heroicons": "^2.0.16",
     "http-proxy-middleware": "^2.0.6",
+    "js-cookie": "^3.0.1",
     "lottie-web": "^5.10.2",
     "next": "13.2.4",
     "postcss-flexbugs-fixes": "^5.0.2",
@@ -43,6 +44,7 @@
   "devDependencies": {
     "@heroicons/react": "^2.0.16",
     "@types/http-proxy-middleware": "^1.0.0",
+    "@types/js-cookie": "^3.0.3",
     "@types/node": "^18.15.0",
     "@types/react-typing-effect": "^2.0.3",
     "@types/three": "^0.149.0",

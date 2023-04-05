@@ -32,18 +32,14 @@ export default function Content() {
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0)
 
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setIsLoading(false);
-      setProgress(100);
-    }, 2000);
-
-    return () => clearTimeout(timeoutId);
-  }, []);
+ 
   const handleSkillHover = (skill: Skill | null) => {
     setHoveredSkill(skill);
   };
-
+  useEffect(() => {
+    setProgress(100)
+    setIsLoading(false);
+  }, []);
   return (
     <div>
        {isLoading ? (
