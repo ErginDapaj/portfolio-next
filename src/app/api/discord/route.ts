@@ -1,10 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
+export async function GET(req: Request, res: Response) {
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { query, method } = req;
-
-  if (method === 'GET') {
-    try {
       // Fetch data from another API endpoint using await
       const response = await fetch('https://api.lanyard.rest/v1/users/399911902211473410');
       // Check if the response is ok
@@ -14,17 +11,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Log the JSON data
         console.log(json);
         // Send back a success response with status code 200 and JSON data
-        res.status(200).json(json);
+        
+        return NextResponse.json(json);
+
       } else {
         // Send back an error response with status code and message
-        res.status(response.status).send(response.statusText);
+        NextResponse.json({ msg: 'There was an issue getting user info' });
       }
-    } catch (error) {
-      // Handle any errors or exceptions that might occur
-      console.error(error);
-      // Send back an internal server error response with status code 500 and error message
-      res.status(500).send(error);
-    }
-  }
-
-}
+    } 

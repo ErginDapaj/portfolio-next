@@ -15,7 +15,7 @@ export default function Header() {
 
   async function getStatus() {
     try {
-      const response = await fetch('https://api.lanyard.rest/v1/users/399911902211473410');
+      const response = await fetch('/api/discord');
       if (response.ok) {
         const json = await response.json();
         const status = json.data.discord_status as keyof typeof statusColors;
