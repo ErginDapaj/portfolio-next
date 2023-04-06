@@ -13,23 +13,66 @@ export default function Header() {
   const statusColors = { dnd: 'red', offline: 'grey', online: 'green', idle: 'yellow' };
   const [status, setStatus] = useState('grey');
 
-  async function getStatus() {
-    try {
-      const response = await fetch('/api/discord');
-      if (response.ok) {
-        const json = await response.json();
-        const status = json.data.discord_status as keyof typeof statusColors;
-        const color = statusColors[status] || 'black';
-        setStatus(color);
-        console.log(color);
-      } else {
-        console.error(response.statusText);
+  useEffect(() => {
+    const socket = new WebSocket('wss://api.lanyard.rest/socket');
+
+    socket.addEventListener('open', (event) => {
+      console.log('WebSocket connection opened:', event);
+
+      const initializeMessage = {
+        op: 2,
+        d: {
+          subscribe_to_ids: ['399911902211473410'] 
+        }
+      };
+      socket.send(JSON.stringify(initializeMessage));
+    });
+
+    socket.addEventListener('message', (event) => {
+      console.log('WebSocket message received:', event);
+
+      const message = JSON.parse(event.data.toString('utf-8'));
+      switch (message.op) {
+        case 0: 
+          switch (message.t) {
+            case 'INIT_STATE':
+            console.log('INIT_STATE event:', message.d);
+            const initStatus = message.d['399911902211473410'].discord_status as keyof typeof statusColors;
+            const initColor = statusColors[initStatus] || 'black';
+            setStatus(initColor);
+            console.log(initColor);
+            break;
+            case 'PRESENCE_UPDATE':
+              console.log('PRESENCE_UPDATE event:', message.d);
+              const presenceStatus = message.d.discord_status as keyof typeof statusColors;
+              const presenceColor = statusColors[presenceStatus] || 'black';
+              setStatus(presenceColor);
+              console.log('Status:', presenceStatus);
+              console.log('Color:', presenceColor);
+              break;
+          }
+          break;
+        default:
+          console.log('Unhandled op code:', message.op);
+          break;
       }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  getStatus();
+    });
+
+    socket.addEventListener('close', (event) => {
+      console.log('WebSocket connection closed:', event);
+    });
+
+    socket.addEventListener('error', (event) => {
+      console.log('WebSocket error:', event);
+    });
+
+
+    return () => {
+      socket.close();
+    };
+  }, []);
+
+
   useEffect(() => setIsTyping(true), []);
 
   return (
