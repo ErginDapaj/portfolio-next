@@ -16,6 +16,7 @@
     "@material-ui/core": "^4.12.4",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "bufferutil": "^4.0.7",
     "date-fns": "^2.29.3",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
@@ -39,7 +40,9 @@
     "three": "^0.150.1",
     "three-bmfont-text": "^2.3.0",
     "three-text2d": "^0.6.0",
-    "typescript": "4.9.5"
+    "typescript": "4.9.5",
+    "utf-8-validate": "^6.0.3",
+    "ws": "^8.13.0"
   },
   "devDependencies": {
     "@heroicons/react": "^2.0.16",
@@ -48,6 +51,7 @@
     "@types/node": "^18.15.0",
     "@types/react-typing-effect": "^2.0.3",
     "@types/three": "^0.149.0",
+    "@types/ws": "^8.5.4",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.7"
