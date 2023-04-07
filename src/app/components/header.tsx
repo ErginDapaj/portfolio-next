@@ -14,64 +14,90 @@ export default function Header() {
   const [status, setStatus] = useState('grey');
 
   useEffect(() => {
-    const socket = new WebSocket('wss://api.lanyard.rest/socket');
+    let socket: WebSocket | null = null;
 
-    socket.addEventListener('open', (event) => {
-      console.log('WebSocket connection opened:', event);
+    const startWebSocket = () => {
+      socket = new WebSocket('wss://api.lanyard.rest/socket');
 
-      const initializeMessage = {
-        op: 2,
-        d: {
-          subscribe_to_ids: ['399911902211473410'] 
-        }
-      };
-      socket.send(JSON.stringify(initializeMessage));
-    });
+      socket.addEventListener('open', (event) => {
+        console.log('WebSocket connection opened:', event);
 
-    socket.addEventListener('message', (event) => {
-      console.log('WebSocket message received:', event);
+        const initializeMessage = {
+          op: 2,
+          d: {
+            subscribe_to_ids: ['399911902211473410'],
+          },
+        };
+        socket?.send(JSON.stringify(initializeMessage));
+      });
 
-      const message = JSON.parse(event.data.toString('utf-8'));
-      switch (message.op) {
-        case 0: 
-          switch (message.t) {
-            case 'INIT_STATE':
-            console.log('INIT_STATE event:', message.d);
-            const initStatus = message.d['399911902211473410'].discord_status as keyof typeof statusColors;
-            const initColor = statusColors[initStatus] || 'black';
-            setStatus(initColor);
-            console.log(initColor);
+      socket.addEventListener('message', (event) => {
+        console.log('WebSocket message received:', event);
+
+        const message = JSON.parse(event.data.toString('utf-8'));
+        switch (message.op) {
+          case 0:
+            switch (message.t) {
+              case 'INIT_STATE':
+                console.log('INIT_STATE event:', message.d);
+                const initStatus = message.d['399911902211473410'].discord_status as keyof typeof statusColors;
+                const initColor = statusColors[initStatus] || 'black';
+                setStatus(initColor);
+                console.log(initColor);
+                break;
+              case 'PRESENCE_UPDATE':
+                console.log('PRESENCE_UPDATE event:', message.d);
+                const presenceStatus = message.d.discord_status as keyof typeof statusColors;
+                const presenceColor = statusColors[presenceStatus] || 'black';
+                setStatus(presenceColor);
+                console.log('Status:', presenceStatus);
+                console.log('Color:', presenceColor);
+                break;
+            }
             break;
-            case 'PRESENCE_UPDATE':
-              console.log('PRESENCE_UPDATE event:', message.d);
-              const presenceStatus = message.d.discord_status as keyof typeof statusColors;
-              const presenceColor = statusColors[presenceStatus] || 'black';
-              setStatus(presenceColor);
-              console.log('Status:', presenceStatus);
-              console.log('Color:', presenceColor);
-              break;
-          }
-          break;
-        default:
-          console.log('Unhandled op code:', message.op);
-          break;
-      }
-    });
+          default:
+            console.log('Unhandled op code:', message.op);
+            break;
+        }
+      });
 
-    socket.addEventListener('close', (event) => {
-      console.log('WebSocket connection closed:', event);
-    });
+      socket.addEventListener('close', (event) => {
+        console.log('WebSocket connection closed:', event);
+        clearInterval(heartbeatInterval as NodeJS.Timeout);
+        setTimeout(startWebSocket, 3000); // Try to reconnect after 3 seconds
+      });
 
-    socket.addEventListener('error', (event) => {
-      console.log('WebSocket error:', event);
-    });
+      socket.addEventListener('error', (event) => {
+        console.log('WebSocket error:', event);
+      });
 
+      return () => {
+        socket?.close();
+      };
+    };
+
+    let heartbeatInterval: NodeJS.Timeout | null = null;
+
+    const startHeartbeat = (interval: number) => {
+      heartbeatInterval = setInterval(() => {
+        const heartbeatMessage = {
+          op: 3,
+        };
+        socket?.send(JSON.stringify(heartbeatMessage));
+        console.log('Sent heartbeat');
+      }, interval);
+    };
+
+    startWebSocket();
+    startHeartbeat(30000); // Start sending heartbeat every 30 seconds
 
     return () => {
-      socket.close();
+      clearInterval(heartbeatInterval as NodeJS.Timeout);
+      if (socket) {
+        socket.close();
+      }
     };
   }, []);
-
 
   useEffect(() => setIsTyping(true), []);
 
