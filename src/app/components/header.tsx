@@ -1,17 +1,22 @@
 "use client"
 import { useEffect, useState } from 'react';
 import Typing from 'react-typing-effect';
-import { FaHome, FaBars, FaTimes } from 'react-icons/fa'
+import { FaHome, FaBars, FaTimes, FaInfoCircle, FaUserMinus, FaUmbrellaBeach, FaCodeBranch } from 'react-icons/fa'
 import { IconContext } from 'react-icons';
 import { motion } from 'framer-motion';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Link from 'next/link';
-
+interface Activity {
+  state: string;
+  details: string;
+}
 export default function Header() {
   const [isTyping, setIsTyping] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const statusColors = { dnd: 'red', offline: 'grey', online: 'green', idle: 'yellow' };
   const [status, setStatus] = useState('grey');
+
+  const [codeActivity, setCodeActivity] = useState<Activity | null>(null);
 
   useEffect(() => {
     let socket: WebSocket | null = null;
@@ -42,6 +47,30 @@ export default function Header() {
                 console.log('INIT_STATE event:', message.d);
                 const initStatus = message.d['399911902211473410'].discord_status as keyof typeof statusColors;
                 const initColor = statusColors[initStatus] || 'black';
+
+                const activities = message.d['399911902211473410'].activities;
+                let hasCodeActivity = false;
+                let retrievedActivity: Activity | null = null;
+                for (const activity of activities) {
+                  if (activity.name === "Code") {
+                    hasCodeActivity = true;
+
+                    retrievedActivity = activity;
+                    console.log(activity.state + " " + activity.details)
+                    break;
+                  }
+                }
+
+                // Update the state with retrieved activity values
+                if (hasCodeActivity) {
+                  setCodeActivity({
+                    state: retrievedActivity!.state,
+                    details: retrievedActivity!.details
+                  });
+                } else {
+                  setCodeActivity(null);
+                }
+
                 setStatus(initColor);
                 console.log(initColor);
                 break;
@@ -52,8 +81,21 @@ export default function Header() {
                 setStatus(presenceColor);
                 console.log('Status:', presenceStatus);
                 console.log('Color:', presenceColor);
+
+                // Update the activity with retrieved presence values
+                const activity = message.d.activities.find((activity: { name: string; }) => activity.name === "Code");
+                if (activity) {
+                  console.log('IT WORKED!!!!!!!!')
+                  setCodeActivity({
+                    state: activity.state,
+                    details: activity.details
+                  });
+                } else {
+                  setCodeActivity(null);
+                }
                 break;
             }
+
             break;
           default:
             console.log('Unhandled op code:', message.op);
@@ -100,7 +142,6 @@ export default function Header() {
   }, []);
 
   useEffect(() => setIsTyping(true), []);
-
   return (
 
     <header className="bg-gray-900 text-white py-4">
@@ -126,17 +167,7 @@ export default function Header() {
               </a>
             </Link>
           </li>
-          {/* <li className="nav-item relative">
-            <Link href="/about" legacyBehavior>
-              <a className="nav-link">
-                <button className="font-bold py-2 px-4 border-b-4 border-transparent hover:text-gray-500 hover:border-blue-600 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
-                  About
-                  <span className="absolute bottom-0 left-0 right-0 h-1 bg-white rounded-full transform scale-x-0 origin-left transition-all duration-500"></span>
-                  <span className="absolute bottom-0 left-0 right-0 h-1 bg-white-600 rounded-full transform scale-x-0 origin-left transition-all duration-700"></span>
-                </button>
-              </a>
-            </Link>
-          </li> */}
+
           <li className="nav-item relative">
             <Link href="/projects" legacyBehavior>
               <a className="nav-link">
@@ -159,11 +190,34 @@ export default function Header() {
               </a>
             </Link>
           </li>
+
           <li className="nav-item flex items-center border-l-2 pl-4">
             <span className="text-white font-bold">Grainger</span>
             <span className="text-gray-400 font-bold">#5445:</span>
             <div className={`w-3 h-3 rounded-full ml-2 ${status === 'green' ? 'bg-green-500' : status === 'yellow' ? 'bg-yellow-500' : status === 'red' ? 'bg-red-500' : 'bg-gray-500'}`} />
+            <div className="flex items-center ml-2">
+              {codeActivity && codeActivity.details ? (
+                <div className="flex items-center">
+                  <div className="flex-shrink-0">
+                    <FaCodeBranch className="text-gray-400 mr-1" />
+                  </div>
+                  <div className="ml-2">
+                    <span className="text-gray-600 font-semibold text-sm">{codeActivity.state}</span>
+                    <span className="block text-gray-400 text-xs">{codeActivity.details}</span>
+                  </div>
+                </div>
+
+              ) : (
+                <div className="flex items-center">
+                  <FaUmbrellaBeach className="text-gray-400 mr-1" />
+                  <span className="text-gray-400 text-sm">Not coding at this moment!</span>
+                </div>
+              )}
+
+            </div>
           </li>
+
+
         </ul>
         <div className="sm:hidden">
           <button
