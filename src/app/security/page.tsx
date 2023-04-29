@@ -1,17 +1,33 @@
-"use client";
+"use client"
 import {
+  ChakraProvider,
   Box,
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
+  Text,
+  Heading,
   Modal,
-} from "@material-ui/core";
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  SimpleGrid,
+  useDisclosure,
+  Image,
+  Center,
+  Flex,
+  VStack,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Header from "../components/header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
-
+import { FaLock } from "react-icons/fa";
 import Loader from "../components/loader";
 import {
   faCss3Alt,
@@ -20,19 +36,25 @@ import {
   faJsSquare,
   faNodeJs,
   faVuejs,
-  faReact,
+  faReact
 } from "@fortawesome/free-brands-svg-icons";
 import React from "react";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
+
 interface Security {
   icon: IconName;
   name: string;
   description: string;
+  severity: string;
   image: string;
   link: string;
 }
 
 export default function Security() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedProject, setSelectedProject] = useState<Security | null>(
+    null
+  );
   const [securityData, setSecurityData] = useState<Security[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -46,12 +68,10 @@ export default function Security() {
     }
     fetchData();
   }, []);
-  const handleModalOpen = () => {
-    setIsModalOpen(true);
-  };
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
+  const handleCardClick = (project: Security) => {
+    setSelectedProject(project);
+    onOpen();
   };
 
   const getIcon = (iconName: IconName) => {
@@ -74,132 +94,164 @@ export default function Security() {
   };
 
   return (
-    <div>
-      <Header />
-      <div className="max-w-4xl mx-auto py-8 px-4">
-        <Card
-          className="mb-8 box-shadow"
-          style={{ background: "linear-gradient(45deg, #1F2937, #2D3748)" }}
+    <ChakraProvider>
+      <div>
+        <Box
+          bg="#151515"
+          minHeight="100vh"
+          display="flex"
+          flexDirection="column"
+
         >
-          <CardHeader
-            title={
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="feather feather-alert-circle mr-2"
+          <Header />
+          <Box mt={20} mb={10}>
+            <Heading as="h1" size="2xl" textAlign="center" color="white">
+              Security
+            </Heading>
+            <Text fontSize="xl" textAlign="center" color="white">
+              Check out some of our security-related projects below
+            </Text>
+          </Box>
+          {/* {isLoading ? (
+            <Loader progress={0} />
+          ) : ( */}
+          <Box px={10}>
+            <SimpleGrid columns={[1, 2, 3]} spacing={6}>
+              {securityData.map((project, index) => (
+                <Box
+                  key={index}
+                  bgGradient={`linear(to-t, ${project.severity === "High" ? "#F56565" : project.severity === "Medium" ? "#ED8936" : "#CBD5E0"}, rgba(255, 255, 255, 0.2))`}
+                  boxShadow="md"
+                  borderRadius="lg"
+                  overflow="hidden"
+                  onClick={() => {
+                    setSelectedProject(project);
+                    onOpen();
+                  }}
+                  cursor="pointer"
+                  transition="all 0.2s ease-in-out"
+                  _hover={{
+                    transform: "translateY(-4px)",
+                    boxShadow: "lg",
+                  }}
                 >
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="12" y1="8" x2="12" y2="12"></line>
-                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                </svg>
-                <span className="text-white">Disclaimer</span>
-              </div>
-            }
-            className="text-white"
-          />
-          <CardContent>
-            <Typography variant="body1" className="text-white">
-              Listing vulnerabilities found on websites is a sensitive matter
-              and can be illegal in certain situations. Please keep in mind that
-              most of the sites listed here are private and the owners may not
-              want their vulnerabilities exposed. Therefore, the list of
-              vulnerabilities shown here is very limited and does not represent
-              the full scope of vulnerabilities found on these websites.
-            </Typography>
-            <Box mt={4}>
-              <button
-                className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-                onClick={handleModalOpen}
-              >
-                Read More
-              </button>
-            </Box>
-          </CardContent>
-        </Card>
-        <Modal open={isModalOpen} onClose={handleModalClose}>
-          <div className="bg-gray-900 rounded-md p-4">
-            <Typography variant="h4" className="text-white mb-4">
-              Disclaimer
-            </Typography>
-            <Typography variant="body1" className="text-white">
-              The purpose of this site is to provide information about my
-              findings. However, listing vulnerabilities found on websites can
-              be a sensitive matter and can be illegal in certain situations.
-              Please keep in mind that most of the sites listed here are private
-              and the owners may not want their vulnerabilities exposed.
-              Therefore, the list of vulnerabilities shown here is very limited
-              and does not represent the full scope of vulnerabilities found on
-              these websites.
-            </Typography>
-          </div>
-        </Modal>
-        {isLoading ? (
-          <Loader progress={0} />
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            {securityData.map((project, index) => (
-              <Card
-                key={index}
-                style={{
-                  background: "linear-gradient(45deg, #1F2937, #2D3748)",
-                  borderRadius: "10px",
-                  color: "#fff",
-                  height: "100%",
-                }}
-                className="box-shadow"
-              >
-                <CardContent>
-                  <div className="flex justify-center">
-                    {getIcon(project.icon)}
-                  </div>
-                  <Typography
-                    variant="h5"
-                    className="mt-4 mb-2 text-center font-bold"
-                  >
-                    {project.name}
-                  </Typography>
-                  <Typography variant="body1" className="text-center">
-                    {project.description}
-                  </Typography>
-                </CardContent>
-                <Box mt={2} mb={2} className="flex justify-center">
-                  <img
-                    src={project.image}
-                    alt={`${project.name} screenshot`}
-                    style={{
-                      maxWidth: "100%",
-                      height: "auto",
-                    }}
-                  />
+                  <Box p={6}>
+                    <Flex alignItems="center" mb={4}>
+                      {getIcon(project.icon)}
+                      <Text
+                        ml={2}
+                        fontWeight="semibold"
+                        isTruncated
+                        title={project.name}
+                        color="white"
+                      >
+                        {project.name}
+                      </Text>
+                    </Flex>
+
+                    <Box>
+                      <Text color="gray.300" fontSize="md">
+                        {project.description}
+                      </Text>
+                    </Box>
+                  </Box>
+                  <Box py={4} px={6} bg="gray.700">
+                    <Flex justifyContent="space-between">
+                      <Text
+                        fontWeight="semibold"
+                        fontSize="md"
+                        color="gray.200"
+                      >
+                        Severity:
+                      </Text>
+                      <Text
+                        fontSize="md"
+                        color={
+                          project.severity === "High"
+                            ? "red.500"
+                            : project.severity === "Medium"
+                              ? "orange.500"
+                              : "gray.500"
+                        }
+                      >
+                        {project.severity}
+                      </Text>
+                    </Flex>
+                    <Flex justifyContent="space-between" mt={2}>
+                      <Text fontWeight="semibold" fontSize="md" color="gray.200">
+                        Vulnerability Type:
+                      </Text>
+                      <Flex alignItems="center">
+                        <FontAwesomeIcon icon={faLock} size="sm" color="#000" className="lock-icon" />
+
+                        <Text fontSize="md" color="gray.500">
+                        </Text>
+                      </Flex>
+                    </Flex>
+                  </Box>
                 </Box>
-                <CardContent>
-                  <Box textAlign="center">
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-                      style={{
-                        textDecoration: "none",
-                      }}
+              ))}
+            </SimpleGrid>
+          </Box>
+          </Box>
+
+          {/* )} */}
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <Box
+                          maxW="600px"
+              borderRadius="md"
+              boxShadow="md"
+            >
+             <ModalContent
+  maxW="600px"
+  bgGradient={`linear(to-b, ${selectedProject?.severity === "High" ? "#F56565" : selectedProject?.severity === "Medium" ? "#ED8936" : "#CBD5E0"}, rgba(0, 0, 0, 0.3))`}
+>
+                <ModalHeader
+                  color="gray.800"
+                  fontSize="2xl"
+                  fontWeight="bold"
+                  mb={2}
+                >
+                  {selectedProject?.name}
+                </ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <Box mb={4}>
+                    <Image
+                      src={selectedProject?.image}
+                      alt={`Screenshot of ${selectedProject?.name} website`}
+                      objectFit="cover"
+                      maxH="400px"
+                      w="100%"
+                      borderRadius="md"
+                    />
+                  </Box>
+                  <Box mb={4}>
+                    <Text fontSize="lg" color="gray.800">
+                      {selectedProject?.description}
+                    </Text>
+                  </Box>
+                  <Flex justify="flex-end">
+                    <Button
+                      colorScheme="green"
+                      variant="outline"
+                      onClick={() =>
+                        window.open(selectedProject?.link, '_blank')
+                      }
                     >
                       Visit Website
-                    </a>
-                  </Box>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+                    </Button>
+                  </Flex>
+                </ModalBody>
+              </ModalContent>
+            </Box>
+          </Modal>
+
+
+        
       </div>
-    </div>
+    </ChakraProvider>
+
   );
 }
