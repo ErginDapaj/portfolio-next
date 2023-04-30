@@ -22,6 +22,8 @@ import {
   CardBody,
   CardFooter,
   useColorModeValue,
+  Grid,
+  GridItem
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Header from "../components/header";
@@ -109,89 +111,87 @@ export default function Security() {
               Security
             </Heading>
             <Text fontSize="xl" textAlign="center" color="white">
-              Check out some of our security-related projects below
+              Check out some of my security-related projects below.
             </Text>
           </Box>
           {/* {isLoading ? (
             <Loader progress={0} />
           ) : ( */}
           <Box px={10}>
-            <SimpleGrid columns={[1, 2, 3]} spacing={6}>
-              {securityData.map((project, index) => (
-                <Box
-                  key={index}
-                  bgGradient={`linear(to-t, ${project.severity === "High" ? "#F56565" : project.severity === "Medium" ? "#ED8936" : "#CBD5E0"}, rgba(255, 255, 255, 0.2))`}
-                  boxShadow="md"
-                  borderRadius="lg"
-                  overflow="hidden"
-                  onClick={() => {
-                    setSelectedProject(project);
-                    onOpen();
-                  }}
-                  cursor="pointer"
-                  transition="all 0.2s ease-in-out"
-                  _hover={{
-                    transform: "translateY(-4px)",
-                    boxShadow: "lg",
-                  }}
-                >
-                  <Box p={6}>
-                    <Flex alignItems="center" mb={4}>
-                      {getIcon(project.icon)}
-                      <Text
-                        ml={2}
-                        fontWeight="semibold"
-                        isTruncated
-                        title={project.name}
-                        color="white"
-                      >
-                        {project.name}
-                      </Text>
-                    </Flex>
+          <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} gap={6}>
+    {securityData.map((project, index) => (
+      <GridItem
+        key={index}
+  
+        bgGradient={`linear-gradient(to top right, ${project.severity === "High" ? "#6b3d3a" : project.severity === "Medium" ? "#705b3a" : "#fc1ede"}, rgba(255, 255, 255, 0.1))`}
+        boxShadow="md"
+        borderRadius="lg"
+        overflow="hidden"
+        onClick={() => {
+          setSelectedProject(project);
+          onOpen();
+        }}
+        cursor="pointer"
+        transition="all 0.2s ease-in-out"
+        _hover={{
+          transform: "translateY(-4px)",
+          boxShadow: "lg",
+        }}
+      >
+        <Box p={6}>
+          <Flex alignItems="center" mb={4}>
+            {getIcon(project.icon)}
+            <Text
+              ml={2}
+              fontWeight="semibold"
+              isTruncated
+              title={project.name}
+              color="white"
+            >
+              {project.name}
+            </Text>
+          </Flex>
 
-                    <Box>
-                      <Text color="gray.300" fontSize="md">
-                        {project.description}
-                      </Text>
-                    </Box>
-                  </Box>
-                  <Box py={4} px={6} bg="gray.700">
-                    <Flex justifyContent="space-between">
-                      <Text
-                        fontWeight="semibold"
-                        fontSize="md"
-                        color="gray.200"
-                      >
-                        Severity:
-                      </Text>
-                      <Text
-                        fontSize="md"
-                        color={
-                          project.severity === "High"
-                            ? "red.500"
-                            : project.severity === "Medium"
-                              ? "orange.500"
-                              : "gray.500"
-                        }
-                      >
-                        {project.severity}
-                      </Text>
-                    </Flex>
-                    <Flex justifyContent="space-between" mt={2}>
-                      <Text fontWeight="semibold" fontSize="md" color="gray.200">
-                        Vulnerability Type:
-                      </Text>
-                      <Flex alignItems="center">
-                        <FontAwesomeIcon icon={faLock} size="sm" color="#000" className="lock-icon" />
-
-                        <Text fontSize="md" color="gray.500">
-                        </Text>
-                      </Flex>
-                    </Flex>
-                  </Box>
-                </Box>
-              ))}
-            </SimpleGrid>
+          <Box>
+            <Text color="gray.300" fontSize="md">
+              {project.description}
+            </Text>
+          </Box>
+        </Box>
+        <Box py={4} px={6} bg="gray.700">
+          <Flex justifyContent="space-between">
+            <Text
+              fontWeight="semibold"
+              fontSize="md"
+              color="gray.200"
+            >
+              Severity:
+            </Text>
+            <Text
+              fontSize="md"
+              color={
+                project.severity === "High"
+                  ? "red.500"
+                  : project.severity === "Medium"
+                  ? "orange.500"
+                  : "gray.500"
+              }
+            >
+              {project.severity}
+            </Text>
+          </Flex>
+          <Flex justifyContent="space-between" mt={2}>
+            <Text fontWeight="semibold" fontSize="md" color="gray.200">
+              Vulnerability Type:
+            </Text>
+            <Flex alignItems="center">
+              <FontAwesomeIcon icon={faLock} size="sm" color="#000" className="lock-icon" />
+            </Flex>
+          </Flex>
+        </Box>
+      </GridItem>
+    ))}
+  </Grid>
           </Box>
           </Box>
 

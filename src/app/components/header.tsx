@@ -239,40 +239,37 @@ export default function Header() {
           <div className="absolute top-0 left-0 w-full h-full bg-gray-900 z-20">
             <ul className="flex flex-col items-center mt-6">
               <li>
+              <Link href="/" legacyBehavior>
                 <a
                   className="block text-center py-2 px-4 font-semibold hover:text-gray-400"
-                  href="#"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Home
                 </a>
+                </Link>
               </li>
               <li className="mt-3">
+              <Link href="/projects" legacyBehavior>
+
                 <a
                   className="block text-center py-2 px-4 font-semibold hover:text-gray-400"
-                  href="#"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  About
-                </a>
-              </li>
-              <li className="mt-3">
-                <a
-                  className="block text-center py-2 px-4 font-semibold hover:text-gray-400"
-                  href="#"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Projects
                 </a>
+                </Link>
               </li>
               <li className="mt-3">
+              <Link href="/security" legacyBehavior>
+
                 <a
                   className="block text-center py-2 px-4 font-semibold hover:text-gray-400"
-                  href="#"
+                  href="/security"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Security
                 </a>
+                </Link>
               </li>
             </ul>
           </div>

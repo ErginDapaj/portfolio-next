@@ -14,22 +14,7 @@ interface Security {
 }
 
 const securityData: Security[] = [
-    {
-        name: "Bots On Discord",
-        description: "Permission issue when replying.",
-        link: "https://bots.ondiscord.xyz/",
-        icon: "vuejs",
-        severity: "Medium",
-        image: "https://media.discordapp.net/attachments/510561488369614848/1090236017350553670/image.png",
-    },
-    {
-        name: "Infinity Bots",
-        description: "Permission to delete any review.",
-        link: "https://infinitybots.gg/",
-        icon: "react",
-        severity: "Medium",
-        image: "https://media.discordapp.net/attachments/510561488369614848/1090236226377887834/image.png",
-    },
+   
     {
         name: "Button Bot",
         description: "Permission issue.",
@@ -77,7 +62,23 @@ const securityData: Security[] = [
         icon: "react",
         severity: "High",
         image: "https://media.discordapp.net/attachments/1084430040252563546/1101989773536657438/image.png"
-    }
+    },
+    {
+        name: "Bots On Discord",
+        description: "Permission issue when replying.",
+        link: "https://bots.ondiscord.xyz/",
+        icon: "vuejs",
+        severity: "Medium",
+        image: "https://media.discordapp.net/attachments/510561488369614848/1090236017350553670/image.png",
+    },
+    {
+        name: "Infinity Bots",
+        description: "Permission to delete any review.",
+        link: "https://infinitybots.gg/",
+        icon: "react",
+        severity: "Medium",
+        image: "https://media.discordapp.net/attachments/510561488369614848/1090236226377887834/image.png",
+    },
 ];
 import { NextResponse } from 'next/server';
 export async function GET(request: Request) {
