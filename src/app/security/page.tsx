@@ -240,7 +240,7 @@ export default function Security() {
                 </Box>
                 <Flex justify="flex-end">
                   <Button
-                    colorScheme="green"
+                    colorScheme="blue"
                     variant="outline"
                     onClick={() =>
                       window.open(selectedProject?.link, '_blank')
