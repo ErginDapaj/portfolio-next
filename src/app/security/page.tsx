@@ -73,10 +73,6 @@ export default function Security() {
     fetchData();
   }, []);
 
-  const handleCardClick = (project: Security) => {
-    setSelectedProject(project);
-    onOpen();
-  };
 
   const getIcon = (iconName: IconName) => {
     switch (iconName) {
@@ -100,13 +96,13 @@ export default function Security() {
   return (
     <ChakraProvider>
       <div>
-        <Box
-          bg="#151515"
-          minHeight="100vh"
-          display="flex"
-          flexDirection="column"
-
-        >
+      <Box
+  minHeight="100vh"
+  display="flex"
+  flexDirection="column"
+  bgGradient='linear(to-bl,  #171e30 0%, #0e1830 25%, #030c1f 50%)'
+  backgroundSize="100% 200%"
+>
           <Header />
           <Box mt={20} mb={10}>
             <Heading as="h1" size="2xl" textAlign="center" color="white">
@@ -253,9 +249,6 @@ export default function Security() {
             </ModalContent>
           </Box>
         </Modal>
-
-
-
       </div>
     </ChakraProvider>
 

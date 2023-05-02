@@ -1,6 +1,5 @@
 "use client";
 import {
-  Box,
   Card,
   CardContent,
   CardHeader,
@@ -19,6 +18,32 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { faDatabase } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  ChakraProvider,
+  Box,
+  Text,
+  Heading,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  CircularProgressLabel,
+  Button,
+  SimpleGrid,
+  useDisclosure,
+  Image,
+  CircularProgress,
+  Center,
+  Flex,
+  VStack,
+  CardBody,
+  CardFooter,
+  useColorModeValue,
+  Grid,
+  GridItem
+} from "@chakra-ui/react";
 export default function About() {
   interface Project {
     name: string;
@@ -56,8 +81,18 @@ export default function About() {
   ];
 
   return (
+    <ChakraProvider>
+         <Box
+  minHeight="100vh"
+  display="flex"
+  flexDirection="column"
+  bgGradient='linear(to-bl,  #171e30 0%, #0e1830 25%, #030c1f 50%)'
+  backgroundSize="100% 200%"
+>
     <div>
+      
       <Header />
+   
       <div className="max-w-4xl mx-auto py-8 px-4">
         <Card
           className="mb-8 box-shadow"
@@ -121,6 +156,9 @@ export default function About() {
           ))}
         </div>
       </div>
+    
     </div>
+    </Box>
+    </ChakraProvider>
   );
 }

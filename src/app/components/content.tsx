@@ -2,7 +2,6 @@
 import { SetStateAction, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
-  Box,
   Card,
   CardContent,
   CardHeader,
@@ -11,6 +10,32 @@ import {
   ListItemText,
   Typography,
 } from "@material-ui/core";
+import {
+  ChakraProvider,
+  Box,
+  Text,
+  Heading,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  CircularProgressLabel,
+  Button,
+  SimpleGrid,
+  useDisclosure,
+  Image,
+  CircularProgress,
+  Center,
+  Flex,
+  VStack,
+  CardBody,
+  CardFooter,
+  useColorModeValue,
+  Grid,
+  GridItem
+} from "@chakra-ui/react";
 import {
   faReact,
   faNodeJs,
@@ -98,6 +123,14 @@ export default function Content() {
     setIsLoading(false);
   }, []);
   return (
+    <ChakraProvider>
+    <Box
+  minHeight="100vh"
+  display="flex"
+  flexDirection="column"
+  bgGradient='linear(to-bl,  #171e30 0%, #0e1830 25%, #030c1f 50%)'
+  backgroundSize="100% 200%"
+>
     <div>
       {isLoading ? (
         <Loader progress={progress} />
@@ -158,5 +191,7 @@ export default function Content() {
         </Box>
       )}
     </div>
+    </Box>
+    </ChakraProvider>
   );
 }
