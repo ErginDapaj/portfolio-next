@@ -64,20 +64,7 @@ export default function About() {
       description: "This is still work in progress. Very recent.",
       link: "https://ergin.al",
       icon: <FontAwesomeIcon icon={faReact} />,
-    },
-    {
-      name: "albamar.al",
-      description: "A simple site not using any framework at the moment.",
-      link: "https://albamar.al",
-      icon: <FontAwesomeIcon icon={faHtml5} />,
-    },
-    {
-      name: "MrMoth Academy",
-      description:
-        "A website made with Express, doesn't use any framework. (OS)",
-      link: "https://github.com/MrMothDevs/MrMoth-Devs-Academy",
-      icon: <FontAwesomeIcon icon={faJs} />,
-    },
+    }
   ];
 
   return (
