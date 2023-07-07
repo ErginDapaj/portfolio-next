@@ -14,7 +14,32 @@ interface Security {
 }
 
 const securityData: Security[] = [
-   
+    {
+        name: "Dank Memer",
+        description: "Critical Vulnerability.",
+        link: "https://dankmemer.lol/changelog/2023-17-0",
+        icon: "react",
+        severity: "High",
+        image: "https://media.discordapp.net/attachments/1084430040252563546/1101989773536657438/image.png"
+    },
+    
+    {
+        name: "Double Counter",
+        description: "Permission Issue",
+        link: "https://dcounter.space/",
+        icon: "react",
+        severity: "High",
+        image: "https://media.discordapp.net/attachments/511145768154038278/1126868366326509618/image.png"
+    },
+    
+    {
+        name: "Virtual Dinner",
+        description: "Permission Issue",
+        link: "https://virtualdinerbot.com/",
+        icon: "vuejs",
+        severity: "High",
+        image: "https://media.discordapp.net/attachments/511145768154038278/1126869029995434074/image.png"
+    },
     {
         name: "Button Bot",
         description: "Permission issue.",
@@ -54,14 +79,6 @@ const securityData: Security[] = [
         icon: "react",
         severity: "High",
         image: "https://media.discordapp.net/attachments/1084430040252563546/1101988880456089710/image.png"
-    },
-    {
-        name: "Dank Memer",
-        description: "Critical Vulnerability.",
-        link: "https://dankmemer.lol/changelog/2023-17-0",
-        icon: "react",
-        severity: "High",
-        image: "https://media.discordapp.net/attachments/1084430040252563546/1101989773536657438/image.png"
     },
     {
         name: "Bots On Discord",
