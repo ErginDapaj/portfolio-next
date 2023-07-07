@@ -1,54 +1,89 @@
 "use client"
-import { useEffect, useState } from 'react';
-import Typing from 'react-typing-effect';
-import { FaHome, FaBars, FaTimes, FaInfoCircle, FaUserMinus, FaUmbrellaBeach, FaCodeBranch } from 'react-icons/fa'
-import { IconContext } from 'react-icons';
-import { motion } from 'framer-motion';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Link from 'next/link';
+import {
+  ChakraProvider,
+  Box,
+  Circle,
+  Flex,
+  Heading,
+  HStack,
+  IconButton,
+  LinkBox,
+  LinkOverlay,
+  Text,
+  useDisclosure,
+  Button,
+} from "@chakra-ui/react";
+import { FaUserSecret } from 'react-icons/fa';
+import { animated, useTransition, useSpring } from 'react-spring';
+
+import {
+  FaBars,
+  FaTimes,
+  FaCodeBranch,
+  FaUmbrellaBeach,
+} from "react-icons/fa";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+
 interface Activity {
   state: string;
   details: string;
 }
-export default function Header() {
-  const [isTyping, setIsTyping] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const statusColors = { dnd: 'red', offline: 'grey', online: 'green', idle: 'yellow' };
-  const [status, setStatus] = useState('grey');
 
+export default function Header() {
+  const { isOpen, onToggle } = useDisclosure();
+  const [status, setStatus] = useState("grey");
   const [codeActivity, setCodeActivity] = useState<Activity | null>(null);
+  const [showSecurityText, setShowSecurityText] = useState(false);
+
+  const securityTextStyle = useSpring({
+    opacity: showSecurityText ? 1 : 0,
+    config: { duration: 500 },
+  });
+  const transitions = useTransition(showSecurityText, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+    config: { duration: 500 },
+  });
+  const iconStyle = useSpring({
+    color: showSecurityText ? 'black' : 'white',
+    config: { duration: 500 },
+  });
 
   useEffect(() => {
     let socket: WebSocket | null = null;
 
     const startWebSocket = () => {
-      socket = new WebSocket('wss://api.lanyard.rest/socket');
+      socket = new WebSocket("wss://api.lanyard.rest/socket");
 
-      socket.addEventListener('open', (event) => {
-        console.log('WebSocket connection opened:', event);
+      socket.addEventListener("open", (event) => {
+        console.log("WebSocket connection opened:", event);
 
         const initializeMessage = {
           op: 2,
           d: {
-            subscribe_to_ids: ['399911902211473410'],
+            subscribe_to_ids: ["399911902211473410"],
           },
         };
         socket?.send(JSON.stringify(initializeMessage));
       });
 
-      socket.addEventListener('message', (event) => {
-        console.log('WebSocket message received:', event);
+      socket.addEventListener("message", (event) => {
+        console.log("WebSocket message received:", event);
 
-        const message = JSON.parse(event.data.toString('utf-8'));
+        const message = JSON.parse(event.data.toString("utf-8"));
         switch (message.op) {
           case 0:
             switch (message.t) {
-              case 'INIT_STATE':
-                console.log('INIT_STATE event:', message.d);
-                const initStatus = message.d['399911902211473410'].discord_status as keyof typeof statusColors;
-                const initColor = statusColors[initStatus] || 'black';
+              case "INIT_STATE":
+                console.log("INIT_STATE event:", message.d);
+                const initStatus =
+                  message.d["399911902211473410"].discord_status;
+                setStatus(initStatus);
 
-                const activities = message.d['399911902211473410'].activities;
+                const activities =
+                  message.d["399911902211473410"].activities;
                 let hasCodeActivity = false;
                 let retrievedActivity: Activity | null = null;
                 for (const activity of activities) {
@@ -56,7 +91,7 @@ export default function Header() {
                     hasCodeActivity = true;
 
                     retrievedActivity = activity;
-                    console.log(activity.state + " " + activity.details)
+                    console.log(activity.state + " " + activity.details);
                     break;
                   }
                 }
@@ -65,30 +100,26 @@ export default function Header() {
                 if (hasCodeActivity) {
                   setCodeActivity({
                     state: retrievedActivity!.state,
-                    details: retrievedActivity!.details
+                    details: retrievedActivity!.details,
                   });
                 } else {
                   setCodeActivity(null);
                 }
 
-                setStatus(initColor);
-                console.log(initColor);
                 break;
-              case 'PRESENCE_UPDATE':
-                console.log('PRESENCE_UPDATE event:', message.d);
-                const presenceStatus = message.d.discord_status as keyof typeof statusColors;
-                const presenceColor = statusColors[presenceStatus] || 'black';
-                setStatus(presenceColor);
-                console.log('Status:', presenceStatus);
-                console.log('Color:', presenceColor);
+              case "PRESENCE_UPDATE":
+                console.log("PRESENCE_UPDATE event:", message.d);
+                const presenceStatus = message.d.discord_status;
+                setStatus(presenceStatus);
 
                 // Update the activity with retrieved presence values
-                const activity = message.d.activities.find((activity: { name: string; }) => activity.name === "Code");
+                const activity = message.d.activities.find(
+                  (activity: { name: string }) => activity.name === "Code"
+                );
                 if (activity) {
-                  console.log('IT WORKED!!!!!!!!')
                   setCodeActivity({
                     state: activity.state,
-                    details: activity.details
+                    details: activity.details,
                   });
                 } else {
                   setCodeActivity(null);
@@ -98,19 +129,18 @@ export default function Header() {
 
             break;
           default:
-            console.log('Unhandled op code:', message.op);
+            console.log("Unhandled op code:", message.op);
             break;
         }
       });
 
-      socket.addEventListener('close', (event) => {
-        console.log('WebSocket connection closed:', event);
-        clearInterval(heartbeatInterval as NodeJS.Timeout);
+      socket.addEventListener("close", (event) => {
+        console.log("WebSocket connection closed:", event);
         setTimeout(startWebSocket, 3000); // Try to reconnect after 3 seconds
       });
 
-      socket.addEventListener('error', (event) => {
-        console.log('WebSocket error:', event);
+      socket.addEventListener("error", (event) => {
+        console.log("WebSocket error:", event);
       });
 
       return () => {
@@ -118,164 +148,241 @@ export default function Header() {
       };
     };
 
-    let heartbeatInterval: NodeJS.Timeout | null = null;
-
-    const startHeartbeat = (interval: number) => {
-      heartbeatInterval = setInterval(() => {
-        const heartbeatMessage = {
-          op: 3,
-        };
-        socket?.send(JSON.stringify(heartbeatMessage));
-        console.log('Sent heartbeat');
-      }, interval);
-    };
-
     startWebSocket();
-    startHeartbeat(30000); // Start sending heartbeat every 30 seconds
-
-    return () => {
-      clearInterval(heartbeatInterval as NodeJS.Timeout);
-      if (socket) {
-        socket.close();
-      }
-    };
   }, []);
 
-  useEffect(() => setIsTyping(true), []);
   return (
+    <ChakraProvider>
+      <Box
+        bgGradient="linear(to-bl, black, darkred)"
+        color="white"
+        py={4}
+      >
 
-    <header className="bg-gray-900 text-white py-4">
-      <nav className="container mx-auto flex justify-between items-center">
-        <div className="text-xl font-bold">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 9 }}
+        <Flex
+          as="nav"
+          align="center"
+          justify="space-between"
+          wrap="wrap"
+          w="100%"
+          maxW="container.xl"
+          mx="auto"
+          px={8}
+        >
+          <Flex align="center">
+            <Heading as="h1" size="lg" letterSpacing={'tighter'} fontFamily="'Creepster', cursive">
+              Ergin's Portfolio
+            </Heading>
+
+          </Flex>
+
+          <HStack
+            as="ul"
+            display={{ base: 'none', md: 'flex' }}
+            spacing={4}
+            align="center"
           >
-            {isTyping && <Typing speed={150} text={["Ergin's Portfolio"]} />}
-          </motion.div>
-        </div>
-        <ul className="hidden sm:flex sm:space-x-4">
-          <li className="nav-item relative">
-            <Link href="/" legacyBehavior>
-              <a className="nav-link">
-                <button className="font-bold py-2 px-4 border-b-4 border-transparent hover:text-gray-500 hover:border-blue-600 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
-                  Home
-                  <span className="absolute bottom-0 left-0 right-0 h-1 bg-white rounded-full transform scale-x-0 origin-left transition-all duration-500"></span>
-                  <span className="absolute bottom-0 left-0 right-0 h-1 bg-white-600 rounded-full transform scale-x-0 origin-left transition-all duration-700"></span>
-                </button>
-              </a>
-            </Link>
-          </li>
-
-          <li className="nav-item relative">
-            <Link href="/projects" legacyBehavior>
-              <a className="nav-link">
-                <button className="font-bold py-2 px-4 border-b-4 border-transparent hover:text-gray-500 hover:border-blue-600 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
-                  Projects
-                  <span className="absolute bottom-0 left-0 right-0 h-1 bg-white rounded-full transform scale-x-0 origin-left transition-all duration-500"></span>
-                  <span className="absolute bottom-0 left-0 right-0 h-1 bg-white-600 rounded-full transform scale-x-0 origin-left transition-all duration-700"></span>
-                </button>
-              </a>
-            </Link>
-          </li>
-          <li className="nav-item relative">
-            <Link href="/security" legacyBehavior>
-              <a className="nav-link">
-                <button className="font-bold py-2 px-4 border-b-4 border-transparent hover:text-gray-500 hover:border-blue-600 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
-                  Security
-                  <span className="absolute bottom-0 left-0 right-0 h-1 bg-white rounded-full transform scale-x-0 origin-left transition-all duration-500"></span>
-                  <span className="absolute bottom-0 left-0 right-0 h-1 bg-white-600 rounded-full transform scale-x-0 origin-left transition-all duration-700"></span>
-                </button>
-              </a>
-            </Link>
-          </li>
-
-          <li className="nav-item flex items-center border-l-2 pl-4">
-            <span className="text-white font-bold">Grainger</span>
-            <span className="text-gray-400 font-bold">#5445:</span>
-            <div className={`w-3 h-3 rounded-full ml-2 ${status === 'green' ? 'bg-green-500' : status === 'yellow' ? 'bg-yellow-500' : status === 'red' ? 'bg-red-500' : 'bg-gray-500'}`} />
-            <div className="flex items-center ml-2">
-              {codeActivity && codeActivity.details ? (
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <FaCodeBranch className="text-gray-400 mr-1" />
-                  </div>
-                  <div className="ml-2">
-                    <span className="text-gray-600 font-semibold text-sm">{codeActivity.state}</span>
-                    <span className="block text-gray-400 text-xs">{codeActivity.details}</span>
-                  </div>
-                </div>
-
-              ) : (
-                <div className="flex items-center">
-                  <FaUmbrellaBeach className="text-gray-400 mr-1" />
-                  <span className="text-gray-400 text-sm">Not coding at this moment!</span>
-                </div>
-              )}
-
-            </div>
-          </li>
-
-
-        </ul>
-        <div className="sm:hidden">
-          <button
-            className="flex items-center justify-center w-8 h-8 text-white rounded-full hover:text-gray-400 focus:outline-none"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? (
-              <IconContext.Provider value={{ className: 'h-6 w-6' }}>
-                <FaTimes />
-              </IconContext.Provider>
-            ) : (
-              <IconContext.Provider value={{ className: 'h-6 w-6' }}>
-                <FaBars />
-              </IconContext.Provider>
-            )}
-          </button>
-        </div>
-        {isMenuOpen && (
-          <div className="absolute top-0 left-0 w-full h-full bg-gray-900 z-20">
-            <ul className="flex flex-col items-center mt-6">
-              <li>
-              <Link href="/" legacyBehavior>
-                <a
-                  className="block text-center py-2 px-4 font-semibold hover:text-gray-400"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Home
-                </a>
+            <Box as="li">
+              <LinkBox>
+                <Link href="/" onClick={onToggle}>
+                  <Button
+                    fontWeight="bold"
+                    px={4}
+                    py={2}
+                    bg={'transparent'}
+                    color="white"
+                    _hover={{
+                      bg: 'darkred',
+                      borderColor: 'darkred',
+                    }}
+                  >
+                    Home
+                  </Button>
                 </Link>
-              </li>
-              <li className="mt-3">
-              <Link href="/projects" legacyBehavior>
-
-                <a
-                  className="block text-center py-2 px-4 font-semibold hover:text-gray-400"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Projects
-                </a>
+              </LinkBox>
+            </Box>
+            <Box as="li">
+              <LinkBox>
+                <Link href="/projects" onClick={onToggle}>
+                  <Button
+                    fontWeight="bold"
+                    px={4}
+                    py={2}
+                    bg={'transparent'}
+                    color="white"
+                    _hover={{
+                      bg: 'darkred',
+                      borderColor: 'darkred',
+                    }}
+                  >
+                    Projects
+                  </Button>
                 </Link>
-              </li>
-              <li className="mt-3">
-              <Link href="/security" legacyBehavior>
+              </LinkBox>
+            </Box>
+            <Box as="li">
+              <LinkBox>
+                <Link href="/security" onClick={onToggle}>
+                  <Button
+                    leftIcon={
+                      <animated.span style={{ ...iconStyle }}>
+                        <FaUserSecret />
+                      </animated.span>
+                    }
+                    fontWeight="bold"
+                    px={4}
+                    py={2}
+                    w={32}
+                    bg={'transparent'}
+                    color="white"
+                    onMouseEnter={() => setShowSecurityText(true)}
+                    onMouseLeave={() => setShowSecurityText(false)}
+                    _hover={{
+                      bg: 'red.600',
+                      borderColor: 'red.600',
+                    }}
+                  >
+                    {transitions((styles, item) =>
+                      item ? (
+                        <animated.span style={{ ...styles, color: 'black' }}>
+                          Security
+                        </animated.span>
+                      ) : (
+                        <animated.span style={styles}>******</animated.span>
+                      )
+                    )}
+                  </Button>
 
-                <a
-                  className="block text-center py-2 px-4 font-semibold hover:text-gray-400"
-                  href="/security"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Security
-                </a>
+
                 </Link>
-              </li>
-            </ul>
-          </div>
-        )}
-      </nav>
-    </header>
+              </LinkBox>
+            </Box>
+            <Box as="li" pl={4} borderLeft="2px solid white">
+              <HStack spacing={2}>
+                <Text fontWeight="bold" fontFamily="'Creepster', cursive">
+                  Grainger
+                </Text>
 
+                <Circle
+                  size={3}
+                  bg={
+                    status === "online"
+                      ? "green.500"
+                      : status === "idle"
+                        ? "yellow.500"
+                        : status === "dnd"
+                          ? "red.500"
+                          : "gray.500"
+                  }
+                />
+                {codeActivity && codeActivity.details ? (
+                  <HStack spacing={2}>
+                    <FaCodeBranch color="gray" />
+                    <Box>
+                      <Text fontWeight="semibold" fontSize="sm">
+                        {codeActivity.state}
+                      </Text>
+                      <Text fontSize="xs">{codeActivity.details}</Text>
+                    </Box>
+                  </HStack>
+                ) : (
+                  <HStack spacing={2}>
+                    <FaUmbrellaBeach color="gray" />
+                    <Text fontSize="sm">Not coding at this moment!</Text>
+                  </HStack>
+                )}
+              </HStack>
+            </Box>
+          </HStack>
+
+          <IconButton
+            display={{ base: "flex", md: "none" }}
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+            icon={isOpen ? <FaTimes /> : <FaBars />}
+            onClick={onToggle}
+          />
+
+          {isOpen && (
+            <Box
+              as="ul"
+              position="absolute"
+              top={0}
+              left={0}
+              w="full"
+              h="full"
+              bgGradient="linear(to-r, red.500, blue.500, blue.900)"
+              zIndex={20}
+              display={{ base: "flex", md: "none" }}
+              flexDirection="column"
+              alignItems="center"
+              mt={24}
+            >
+              <Box as="li">
+                <LinkBox>
+                  <LinkOverlay href="/" onClick={onToggle}>
+                    <Text
+                      fontWeight="bold"
+                      px={4}
+                      py={2}
+                      _hover={{
+                        bgGradient: "linear(to-r, red.500, blue.500, blue.900)",
+                        bgClip: "text",
+                        color: "white",
+                        transitionDuration: "0.2s",
+                        boxShadow: "lg",
+                      }}
+                    >
+                      Home
+                    </Text>
+
+
+                  </LinkOverlay>
+                </LinkBox>
+              </Box>
+              <Box as="li" mt={3}>
+                <LinkBox>
+                  <LinkOverlay href="/projects" onClick={onToggle}>
+                    <Text
+                      fontWeight="bold"
+                      px={4}
+                      py={2}
+                      _hover={{
+                        bgGradient:
+                          "linear(to-r, red.500, blue.500, blue.900)",
+                        bgClip: "text",
+                        color: "white",
+                        transitionDuration: "0.2s",
+                      }}
+                    >
+                      Projects
+                    </Text>
+                  </LinkOverlay>
+                </LinkBox>
+              </Box>
+              <Box as="li" mt={3}>
+                <LinkBox>
+                  <LinkOverlay href="/security" onClick={onToggle}>
+                    <Text
+                      fontWeight="bold"
+                      px={4}
+                      py={2}
+                      _hover={{
+                        bgGradient:
+                          "linear(to-r, red.500, blue.500, blue.900)",
+                        bgClip: "text",
+                        color: "white",
+                        transitionDuration: "0.2s",
+                      }}
+                    >
+                      Security
+                    </Text>
+                  </LinkOverlay>
+                </LinkBox>
+              </Box>
+            </Box>
+          )}
+        </Flex>
+      </Box>
+    </ChakraProvider>
   );
 }

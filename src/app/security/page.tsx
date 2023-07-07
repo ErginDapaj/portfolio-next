@@ -119,77 +119,74 @@ export default function Security() {
           ) : (
             <Box px={10}>
               <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} gap={6}>
-                {securityData.map((project, index) => (
-                  <GridItem
-                    key={index}
-
-                    bgGradient={`linear-gradient(to top right, ${project.severity === "High" ? "#6b3d3a" : project.severity === "Medium" ? "#705b3a" : "#fc1ede"}, rgba(255, 255, 255, 0.1))`}
-                    boxShadow="md"
-                    borderRadius="lg"
-                    overflow="hidden"
-                    onClick={() => {
-                      setSelectedProject(project);
-                      onOpen();
-                    }}
-                    cursor="pointer"
-                    transition="all 0.2s ease-in-out"
-                    _hover={{
-                      transform: "translateY(-4px)",
-                      boxShadow: "lg",
-                    }}
-                  >
-                    <Box p={6}>
-                      <Flex alignItems="center" mb={4}>
-                        {getIcon(project.icon)}
-                        <Text
-                          ml={2}
-                          fontWeight="semibold"
-                          isTruncated
-                          title={project.name}
-                          color="white"
-                        >
-                          {project.name}
-                        </Text>
-                      </Flex>
-
-                      <Box>
-                        <Text color="gray.300" fontSize="md">
-                          {project.description}
-                        </Text>
-                      </Box>
-                    </Box>
-                    <Box py={4} px={6} bg="gray.700">
-                      <Flex justifyContent="space-between">
-                        <Text
-                          fontWeight="semibold"
-                          fontSize="md"
-                          color="gray.200"
-                        >
-                          Severity:
-                        </Text>
-                        <Text
-                          fontSize="md"
-                          color={
-                            project.severity === "High"
-                              ? "red.500"
-                              : project.severity === "Medium"
-                                ? "orange.500"
-                                : "gray.500"
-                          }
-                        >
-                          {project.severity}
-                        </Text>
-                      </Flex>
-                      <Flex justifyContent="space-between" mt={2}>
-                        <Text fontWeight="semibold" fontSize="md" color="gray.200">
-                          Vulnerability Type:
-                        </Text>
-                        <Flex alignItems="center">
-                          <FontAwesomeIcon icon={faLock} size="sm" color="#000" className="lock-icon" />
-                        </Flex>
-                      </Flex>
-                    </Box>
-                  </GridItem>
+              {securityData.map((project, index) => (
+         <GridItem
+         key={index}
+         bgGradient={`linear(to-br, ${
+           project.severity === 'High'
+             ? 'black, darkred'
+             : project.severity === 'Medium'
+             ? 'black, darkorange'
+             : 'black, darkgreen'
+         })`}
+         boxShadow="md"
+         borderRadius="lg"
+         overflow="hidden"
+         onClick={() => {
+           setSelectedProject(project);
+           onOpen();
+         }}
+         cursor="pointer"
+         transition="all 0.2s ease-in-out"
+         _hover={{
+           transform: 'translateY(-4px)',
+           boxShadow: 'lg',
+         }}
+       >
+         <Box p={6}>
+           <Flex alignItems="center" mb={4}>
+             {getIcon(project.icon)}
+             <Text ml={2} fontWeight="semibold" isTruncated title={project.name} color="white">
+               {project.name}
+             </Text>
+           </Flex>
+       
+           <Box>
+             <Text color="gray.300" fontSize="md">
+               {project.description}
+             </Text>
+           </Box>
+         </Box>
+         <Box py={4} px={6} bg="gray.700">
+           <Flex justifyContent="space-between">
+             <Text fontWeight="semibold" fontSize="md" color="gray.200" fontFamily="'Creepster', cursive">
+               Severity:
+             </Text>
+             <Text
+               fontSize="md"
+               color={
+                 project.severity === "High"
+                   ? "red.500"
+                   : project.severity === "Medium"
+                   ? "orange.500"
+                   : "gray.500"
+               }
+               fontFamily="'Creepster', cursive"
+             >
+               {project.severity}
+             </Text>
+           </Flex>
+           <Flex justifyContent="space-between" mt={2}>
+             <Text fontWeight="semibold" fontSize="md" color="gray.200" fontFamily="'Creepster', cursive">
+               Vulnerability Type:
+             </Text>
+             <Flex alignItems="center">
+               <FontAwesomeIcon icon={faLock} size="sm" color="#000" className="lock-icon" />
+             </Flex>
+           </Flex>
+         </Box>
+       </GridItem>
+       
                 ))}
               </Grid>
             </Box>
@@ -206,17 +203,26 @@ export default function Security() {
             boxShadow="md"
           >
             <ModalContent
-              maxW="600px"
-              bgGradient={`linear(to-b, ${selectedProject?.severity === "High" ? "#6b3d3a" : selectedProject?.severity === "Medium" ? "#705b3a" : "#fc1ede"}, rgba(0, 0, 0, 0.3))`}
-            >
-              <ModalHeader
-                color="gray.300"
-                fontSize="2xl"
-                fontWeight="bold"
-                mb={2}
-              >
-                {selectedProject?.name}
-              </ModalHeader>
+  maxW="600px"
+  bgGradient={`linear(to-b, ${
+    selectedProject?.severity === 'High'
+      ? 'black, darkred'
+      : selectedProject?.severity === 'Medium'
+      ? 'black, darkorange'
+      : 'black, darkgreen'
+  }, rgba(0, 0, 0, 0.3))`}
+>
+
+<ModalHeader
+  color="gray.300"
+  fontSize="2xl"
+  fontWeight="bold"
+  mb={2}
+  fontFamily="'Creepster', cursive"
+>
+  {selectedProject?.name}
+</ModalHeader>
+
               <ModalCloseButton />
               <ModalBody>
                 <Box mb={4}>

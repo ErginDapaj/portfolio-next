@@ -6,9 +6,9 @@ import styles from './page.module.css';
 import Header from './components/header';
 import ContentTemp from './components/temp';
 import Content from './components/content';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Loader from './components/loader';
 import Cookies from 'js-cookie';
+import { ChakraProvider } from "@chakra-ui/react";
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,16 +28,18 @@ export default function Home() {
   }, []);
 
   return (
-    <main className={styles.main}>
-      {isLoading ? (
-        <Loader progress={0} />
-      ) : (
-        <>
-          <Header />
-          {/* <ContentTemp /> */}
-          <Content />
-        </>
-      )}
-    </main>
+    <ChakraProvider>
+      <main className={styles.main}>
+        {isLoading ? (
+          <Loader progress={0} />
+        ) : (
+          <>
+            <Header />
+            {/* <ContentTemp /> */}
+            <Content />
+          </>
+        )}
+      </main>
+    </ChakraProvider>
   );
 }

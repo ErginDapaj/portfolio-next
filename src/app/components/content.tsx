@@ -2,39 +2,13 @@
 import { SetStateAction, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from "@material-ui/core";
-import {
   ChakraProvider,
   Box,
-  Text,
   Heading,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  CircularProgressLabel,
-  Button,
-  SimpleGrid,
-  useDisclosure,
-  Image,
-  CircularProgress,
-  Center,
-  Flex,
-  VStack,
-  CardBody,
-  CardFooter,
-  useColorModeValue,
-  Grid,
-  GridItem
+  Text,
+  UnorderedList,
+  ListItem,
+  Flex
 } from "@chakra-ui/react";
 import {
   faReact,
@@ -47,7 +21,7 @@ import {
 import { faDatabase } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Loader from "./loader";
-const MotionTypography = motion(Typography);
+// const MotionTypography = motion(Typography);
 interface Skill {
   name: string;
   description: string;
@@ -124,74 +98,75 @@ export default function Content() {
   }, []);
   return (
     <ChakraProvider>
-    <Box
-  minHeight="100vh"
-  display="flex"
-  flexDirection="column"
-  bgGradient='linear(to-bl,  #171e30 0%, #0e1830 25%, #030c1f 50%)'
-  backgroundSize="100% 200%"
->
-    <div>
+      <Box
+        minHeight="100vh"
+        display="flex"
+        flexDirection="column"
+        bgGradient="linear(to-bl,  #171e30 0%, #0e1830 25%, #030c1f 50%)"
+        backgroundSize="100% 200%"
+      >
+        <div>
       {isLoading ? (
         <Loader progress={progress} />
       ) : (
-        <Box className="p-4 max-w-4xl mx-auto">
-          <Card
-            className="mb-8 box-shadow"
-            style={{ backgroundColor: "#1F2937" }}
-          >
-            <CardHeader title="About Me" className="text-white" />
-            <CardContent>
-              <Typography variant="body1" className="text-white">
+        <Box className="max-w-4xl mx-auto">
+          <Box className="mb-8" bg="black" p={4} borderRadius="md">
+            <Heading as="h2" size="lg" className="text-white" mb={2}>
+              About Me
+            </Heading>
+            <Box>
+              <Text variant="body1" className="text-white">
                 I'm a web developer with experience in building modern and
-                responsive websites using technologies like React, Node.js, and
-                Tailwind CSS. I'm passionate about creating user-friendly and
-                accessible web experiences.
-              </Typography>
-            </CardContent>
-          </Card>
-          <Card
-            className="mb-8 box-shadow"
-            style={{ backgroundColor: "#1F2937" }}
-          >
-            <CardHeader title="My Skills" className="text-white" />
-            <CardContent>
-              <List>
+                responsive websites using technologies like React, Node.js,
+                and Tailwind CSS. I'm passionate about creating
+                user-friendly and accessible web experiences.
+              </Text>
+            </Box>
+          </Box>
+          <Box className="mb-8" bg="black" p={4} borderRadius="md">
+            <Heading as="h2" size="lg" className="text-white" mb={2}>
+              My Skills
+            </Heading>
+            <Box>
+              <UnorderedList>
                 {skills.map((skill) => (
                   <ListItem
                     key={skill.name}
-                    button
                     onMouseEnter={() => handleSkillHover(skill)}
                     onMouseLeave={() => setHoveredSkill(null)}
                     className="hover:bg-gray-800"
                     style={{
                       backgroundColor:
-                        hoveredSkill === skill ? "#374151" : "#1F2937",
+                        hoveredSkill === skill ? "#374151" : "black",
                     }}
+                    p={2}
+                    borderRadius="md"
                   >
-                    <span className="mr-2">{skill.icon}</span>
-                    <ListItemText primary={skill.name} className="text-white" />
-                    {hoveredSkill === skill && (
-                      <MotionTypography
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.2 }}
-                        variant="body1"
-                        className="text-white ml-2"
-                      >
-                        {skill.description}
-                      </MotionTypography>
-                    )}
+                    <Flex alignItems="center">
+                      <span className="mr-2">{skill.icon}</span>
+                      {skill.name}
+                      {/* {hoveredSkill === skill && (
+                        <MotionText
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.2 }}
+                          variant="body1"
+                          className="text-white ml-2"
+                        >
+                          {skill.description}
+                        </MotionText>
+                      )} */}
+                    </Flex>
                   </ListItem>
                 ))}
-              </List>
-            </CardContent>
-          </Card>
+              </UnorderedList>
+            </Box>
+          </Box>
         </Box>
       )}
     </div>
-    </Box>
+      </Box>
     </ChakraProvider>
   );
 }
