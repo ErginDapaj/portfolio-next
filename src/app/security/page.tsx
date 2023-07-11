@@ -33,6 +33,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
 import { FaLock } from "react-icons/fa";
 import Loader from "../components/loader";
+import '@fontsource/space-mono';
+
 import {
   faCss3Alt,
   faHtml5,
@@ -100,15 +102,15 @@ export default function Security() {
   minHeight="100vh"
   display="flex"
   flexDirection="column"
-  bgGradient='linear(to-bl,  #171e30 0%, #0e1830 25%, #030c1f 50%)'
+  bgGradient='linear(to-bl,  #3e7e98 0%, #1f3f4c 35%, #142a32 50%)'
   backgroundSize="100% 200%"
 >
           <Header />
           <Box mt={20} mb={10}>
-            <Heading as="h1" size="2xl" textAlign="center" color="white">
+            <Heading as="h1" size="2xl" fontFamily="'Space Mono', sans-serif" textAlign="center" color="white">
               Security
             </Heading>
-            <Text fontSize="xl" textAlign="center" color="white">
+            <Text fontSize="xl" fontFamily="'Space Mono', sans-serif" textAlign="center" color="white">
               Check out some of my security-related projects below.
             </Text>
           </Box>
@@ -146,23 +148,23 @@ export default function Security() {
          <Box p={6}>
            <Flex alignItems="center" mb={4}>
              {getIcon(project.icon)}
-             <Text ml={2} fontWeight="semibold" isTruncated title={project.name} color="white">
+             <Text ml={2} fontWeight="semibold" fontFamily="'Space Mono', sans-serif" isTruncated title={project.name} color="white">
                {project.name}
              </Text>
            </Flex>
        
            <Box>
-             <Text color="gray.300" fontSize="md">
+             <Text color="gray.300" fontFamily="'Space Mono', sans-serif"  fontSize="md">
                {project.description}
              </Text>
            </Box>
          </Box>
          <Box py={4} px={6} bg="gray.700">
            <Flex justifyContent="space-between">
-             <Text fontWeight="semibold" fontSize="md" color="gray.200" fontFamily="'Creepster', cursive">
+             <Text fontWeight="semibold" fontFamily="'Space Mono', sans-serif"  fontSize="md" color="gray.200" >
                Severity:
              </Text>
-             <Text
+             <Text fontFamily="'Space Mono', sans-serif" 
                fontSize="md"
                color={
                  project.severity === "High"
@@ -171,16 +173,15 @@ export default function Security() {
                    ? "orange.500"
                    : "gray.500"
                }
-               fontFamily="'Creepster', cursive"
              >
                {project.severity}
              </Text>
            </Flex>
            <Flex justifyContent="space-between" mt={2}>
-             <Text fontWeight="semibold" fontSize="md" color="gray.200" fontFamily="'Creepster', cursive">
+             <Text fontWeight="semibold" fontFamily="'Space Mono', sans-serif"  fontSize="md" color="gray.200">
                Vulnerability Type:
              </Text>
-             <Flex alignItems="center">
+             <Flex fontFamily="'Space Mono', sans-serif"  alignItems="center">
                <FontAwesomeIcon icon={faLock} size="sm" color="#000" className="lock-icon" />
              </Flex>
            </Flex>
@@ -218,7 +219,7 @@ export default function Security() {
   fontSize="2xl"
   fontWeight="bold"
   mb={2}
-  fontFamily="'Creepster', cursive"
+  fontFamily="'Space Mono', sans-serif" 
 >
   {selectedProject?.name}
 </ModalHeader>
@@ -244,6 +245,7 @@ export default function Security() {
                   <Button
                     colorScheme="blue"
                     variant="outline"
+                    fontFamily="'Space Mono', sans-serif" 
                     onClick={() =>
                       window.open(selectedProject?.link, '_blank')
                     }

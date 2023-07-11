@@ -21,6 +21,8 @@ import {
 import { faDatabase } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Loader from "./loader";
+import '@fontsource/space-mono';
+
 // const MotionTypography = motion(Typography);
 interface Skill {
   name: string;
@@ -102,7 +104,7 @@ export default function Content() {
         minHeight="100vh"
         display="flex"
         flexDirection="column"
-        bgGradient="linear(to-bl,  #171e30 0%, #0e1830 25%, #030c1f 50%)"
+        bgGradient='linear(to-bl,  #3e7e98 0%, #1f3f4c 35%, #142a32 50%)'
         backgroundSize="100% 200%"
       >
         <div>
@@ -111,11 +113,11 @@ export default function Content() {
       ) : (
         <Box className="max-w-4xl mx-auto">
           <Box className="mb-8" bg="black" p={4} borderRadius="md">
-            <Heading as="h2" size="lg" className="text-white" mb={2}>
+            <Heading fontFamily="'Space Mono', sans-serif" as="h2" size="lg" className="text-white" mb={2}>
               About Me
             </Heading>
             <Box>
-              <Text variant="body1" className="text-white">
+              <Text fontFamily="'Space Mono', sans-serif" variant="body1" className="text-white">
                 I'm a web developer with experience in building modern and
                 responsive websites using technologies like React, Node.js,
                 and Tailwind CSS. I'm passionate about creating
@@ -124,7 +126,7 @@ export default function Content() {
             </Box>
           </Box>
           <Box className="mb-8" bg="black" p={4} borderRadius="md">
-            <Heading as="h2" size="lg" className="text-white" mb={2}>
+            <Heading fontFamily="'Space Mono', sans-serif" as="h2" size="lg" className="text-white" mb={2}>
               My Skills
             </Heading>
             <Box>
@@ -142,7 +144,7 @@ export default function Content() {
                     p={2}
                     borderRadius="md"
                   >
-                    <Flex alignItems="center">
+                    <Flex fontFamily="'Space Mono', sans-serif" className="text-white" alignItems="center">
                       <span className="mr-2">{skill.icon}</span>
                       {skill.name}
                       {/* {hoveredSkill === skill && (

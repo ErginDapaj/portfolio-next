@@ -22,6 +22,7 @@ import {
   FaCodeBranch,
   FaUmbrellaBeach,
 } from "react-icons/fa";
+import '@fontsource/space-mono';
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
@@ -154,7 +155,7 @@ export default function Header() {
   return (
     <ChakraProvider>
       <Box
-        bgGradient="linear(to-bl, black, darkred)"
+        bgGradient='linear(to-tl,  #3e7e98 0%, #1f3f4c 35%, #142a32 50%)'
         color="white"
         py={4}
       >
@@ -170,7 +171,7 @@ export default function Header() {
           px={8}
         >
           <Flex align="center">
-            <Heading as="h1" size="lg" letterSpacing={'tighter'} fontFamily="'Creepster', cursive">
+            <Heading as="h1" size="lg" letterSpacing={'tighter'} fontFamily="'Space Mono', sans-serif">
               Ergin's Portfolio
             </Heading>
 
@@ -187,13 +188,16 @@ export default function Header() {
                 <Link href="/" onClick={onToggle}>
                   <Button
                     fontWeight="bold"
+                    fontFamily="'Space Mono', sans-serif"
                     px={4}
                     py={2}
                     bg={'transparent'}
                     color="white"
                     _hover={{
-                      bg: 'darkred',
-                      borderColor: 'darkred',
+                      fontWeight: 700,
+                      fontSize: "xl",
+                      bg: '#4893b1',
+                      borderColor: '#0f2738',
                     }}
                   >
                     Home
@@ -206,13 +210,14 @@ export default function Header() {
                 <Link href="/projects" onClick={onToggle}>
                   <Button
                     fontWeight="bold"
+                    fontFamily="'Space Mono', sans-serif"
                     px={4}
                     py={2}
                     bg={'transparent'}
                     color="white"
                     _hover={{
-                      bg: 'darkred',
-                      borderColor: 'darkred',
+                    bg: '#4893b1',
+                    borderColor: '#0f2738',
                     }}
                   >
                     Projects
@@ -230,6 +235,7 @@ export default function Header() {
                       </animated.span>
                     }
                     fontWeight="bold"
+                    fontFamily="'Space Mono', sans-serif"
                     px={4}
                     py={2}
                     w={32}
@@ -259,7 +265,7 @@ export default function Header() {
             </Box>
             <Box as="li" pl={4} borderLeft="2px solid white">
               <HStack spacing={2}>
-                <Text fontWeight="bold" fontFamily="'Creepster', cursive">
+                <Text fontWeight="bold"  fontFamily="'Space Mono', sans-serif">
                   Grainger
                 </Text>
 
@@ -324,7 +330,8 @@ export default function Header() {
                       fontWeight="bold"
                       px={4}
                       py={2}
-                      _hover={{
+                      fontFamily="'Space Mono', sans-serif"
+                  _hover={{
                         bgGradient: "linear(to-r, red.500, blue.500, blue.900)",
                         bgClip: "text",
                         color: "white",
@@ -344,6 +351,7 @@ export default function Header() {
                   <LinkOverlay href="/projects" onClick={onToggle}>
                     <Text
                       fontWeight="bold"
+                      fontFamily="'Space Mono', sans-serif"
                       px={4}
                       py={2}
                       _hover={{
@@ -364,6 +372,7 @@ export default function Header() {
                   <LinkOverlay href="/security" onClick={onToggle}>
                     <Text
                       fontWeight="bold"
+                      fontFamily="'Space Mono', sans-serif"
                       px={4}
                       py={2}
                       _hover={{

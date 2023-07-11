@@ -12,6 +12,8 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { faDatabase } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import '@fontsource/space-mono';
+
 import {
   ChakraProvider,
   Box,
@@ -68,7 +70,7 @@ export default function About() {
             minHeight="100vh"
             display="flex"
             flexDirection="column"
-            bgGradient='linear(to-bl, #171e30, #0e1830, #030c1f)'
+            bgGradient='linear(to-bl,  #3e7e98 0%, #1f3f4c 35%, #142a32 50%)'
             backgroundSize="100% 200%"
           >
         <div>
@@ -91,11 +93,11 @@ export default function About() {
                   >
                     <path d="M22 2H12l-2 4H2v16h20V2z"></path>
                   </svg>
-                  <Text color='white'>Projects</Text>
+                  <Text fontFamily="'Space Mono', sans-serif" color='white'>Projects</Text>
                 </div>
               </Box>
               <Box p={4}>
-                <Text color='white'>
+                <Text fontFamily="'Space Mono', sans-serif" color='white'>
                   Please note that most of my projects are private!
                 </Text>
               </Box>
@@ -115,11 +117,11 @@ export default function About() {
                     <Box p={4}>
                       <div style={{ display: "flex", alignItems: "center" }}>
                         {project.icon}
-                        <Text color='white' ml={2}>{project.name}</Text>
+                        <Text fontFamily="'Space Mono', sans-serif" color='white' ml={2}>{project.name}</Text>
                       </div>
                     </Box>
                     <Box p={4}>
-                      <Text color='white'>
+                      <Text fontFamily="'Space Mono', sans-serif" color='white'>
                         {project.description}
                       </Text>
                     </Box>
