@@ -316,7 +316,7 @@ export default function Header() {
               left={0}
               w="full"
               h="full"
-              bgGradient="linear(to-r, red.500, blue.500, blue.900)"
+              bgGradient='linear(to-bl,  #3e7e98 0%, #1f3f4c 35%, #142a32 50%)'
               zIndex={20}
               display={{ base: "flex", md: "none" }}
               flexDirection="column"
