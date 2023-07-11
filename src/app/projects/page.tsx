@@ -114,7 +114,7 @@ export default function About() {
                     className="transform transition duration-300 hover:-translate-y-1 hover:shadow-lg box-shadow"
                     bg='#1F2937'
                   >
-                    <Box p={4}>
+                    <Box  color="white" p={4}>
                       <div style={{ display: "flex", alignItems: "center" }}>
                         {project.icon}
                         <Text fontFamily="'Space Mono', sans-serif" color='white' ml={2}>{project.name}</Text>

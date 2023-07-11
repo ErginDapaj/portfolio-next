@@ -146,7 +146,7 @@ export default function Security() {
          }}
        >
          <Box p={6}>
-           <Flex alignItems="center" mb={4}>
+           <Flex color="white" alignItems="center" mb={4}>
              {getIcon(project.icon)}
              <Text ml={2} fontWeight="semibold" fontFamily="'Space Mono', sans-serif" isTruncated title={project.name} color="white">
                {project.name}
