@@ -36,21 +36,7 @@ export default function Header() {
   const { isOpen, onToggle } = useDisclosure();
   const [status, setStatus] = useState("grey");
   const [codeActivity, setCodeActivity] = useState<Activity | null>(null);
-  const [showSecurityText, setShowSecurityText] = useState(false);
-
-  const transitions = useTransition(showSecurityText, {
-    from: { opacity: 0, transform: "translateY(-10px)" },
-    enter: { opacity: 1, transform: "translateY(0px)" },
-    leave: { opacity: 0, transform: "translateY(-10px)" },
-  });
-
-  const iconStyle = {
-    display: "inline-block",
-    marginRight: "0.5rem",
-    transformOrigin: "center",
-    transition: "transform 0.2s ease-in-out",
-  };
-
+  
   useEffect(() => {
     let socket: WebSocket | null = null;
 
@@ -271,56 +257,39 @@ export default function Header() {
               <LinkBox>
                 <Link href="/security" onClick={onToggle}>
                <Button
-      position="relative"
-      leftIcon={
-        <animated.span style={{ ...iconStyle }}>
-          <FaUserSecret />
-        </animated.span>
-      }
-      fontWeight="bold"
-      fontFamily="'Space Mono', sans-serif"
-      px={4}
-      py={2}
-      w={32}
-      bg={'transparent'}
-      color="white"
-      overflow="hidden"
-      onMouseEnter={() => setShowSecurityText(true)}
-      onMouseLeave={() => setShowSecurityText(false)}
-      _before={{
-        content: '""',
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        backgroundImage:
-          "linear-gradient(to right, red 0%, darkred 50%, red 100%)",
-        transformOrigin: "left",
-        transform: "scaleX(0)",
-        transition: "transform 0.3s ease-in-out",
-        zIndex: -1,
-      }}
-      _hover={{
-        color: 'white',
-        _before: {
-          transformOrigin: "right",
-          transform: "scaleX(1)",
-        },
-        "> span": {
-          transform: "scale(1.2)",
-        },
-      }}
-    >
-      {transitions((styles, item) =>
-        item ? (
-          <animated.span style={{ ...styles, color: 'white', position:"relative", zIndex:"1", minWidth:"60px" }}>
-            Security
-          </animated.span>
-        ) : (
-          <animated.span style={{...styles, minWidth:"60px"}}>******</animated.span>
-        )
-      )}
+                    position="relative"
+                    fontWeight="bold"
+                    fontFamily="'Space Mono', sans-serif"
+                    px={4}
+                    py={2}
+                    bg={'transparent'}
+                    color="white"
+                    overflow="hidden"
+                    transition="font-weight 0.3s ease-in-out, font-size 0.3s ease-in-out"
+                    _before={{
+                      content: '""',
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      backgroundColor: "#4893b1",
+                      transformOrigin: "left",
+                      transform: "scaleX(0)",
+                      transition: "transform 0.3s ease-in-out",
+                      zIndex: -1,
+                    }}
+                    _hover={{
+                      fontWeight: 700,
+                      fontSize: "xl",
+                      color: "white",
+                      _before: {
+                        transformOrigin: "right",
+                        transform: "scaleX(1)",
+                      },
+                    }}
+                  >
+      Security
     </Button>
 
 
