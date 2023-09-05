@@ -9,7 +9,7 @@ import Content from './components/content';
 import Loader from './components/loader';
 import Cookies from 'js-cookie';
 import { ChakraProvider } from "@chakra-ui/react";
-
+import { Analytics } from '@vercel/analytics/react';
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
@@ -35,6 +35,7 @@ export default function Home() {
         ) : (
           <>
             <Header />
+            <Analytics />
             {/* <ContentTemp /> */}
             <Content />
           </>

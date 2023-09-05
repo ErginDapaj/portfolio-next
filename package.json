@@ -24,6 +24,7 @@
     "@types/three": "^0.153.0",
     "@types/websocket": "^1.0.5",
     "@types/ws": "^8.5.5",
+    "@vercel/analytics": "^1.0.2",
     "autoprefixer": "^10.4.14",
     "date-fns": "^2.30.0",
     "eslint": "^8.44.0",
