@@ -250,9 +250,6 @@ export default function Header() {
                         transform: "scaleX(1)",
                       },
                     }}
-                    onClick={() => {
-                      clickSound.play();
-                    }}
 
                   >
                     Projects
@@ -294,9 +291,6 @@ export default function Header() {
                         transformOrigin: "right",
                         transform: "scaleX(1)",
                       },
-                    }}
-                    onClick={() => {
-                      clickSound.play();
                     }}
 
                   >
