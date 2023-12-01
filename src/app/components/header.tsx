@@ -31,9 +31,6 @@ interface Activity {
   state: string;
   details: string;
 }
-const clickSound = new Howl({
-  src: ['/click.mp3'], // Update with your actual sound file path
-});
 
 export default function Header() {
 
@@ -206,9 +203,6 @@ export default function Header() {
                         transformOrigin: "right",
                         transform: "scaleX(1)",
                       },
-                    }}
-                    onClick={() => {
-                      clickSound.play();
                     }}
 
                     
