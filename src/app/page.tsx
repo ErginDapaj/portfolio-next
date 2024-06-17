@@ -60,20 +60,26 @@ const quotes = [
   "Is God willing to prevent evil, but not able? Then he is not omnipotent. Is he able, but not willing? Then he is malevolent. Is he both able and willing? Then whence cometh evil? Is he neither able nor willing? Then why call him God? - Epicurus",
 ];
 
+const averageReadingSpeedWPM = 200; 
+
 const getRandomQuote = () => {
   const randomIndex = Math.floor(Math.random() * quotes.length);
   return quotes[randomIndex];
 };
-
 const Home: React.FC = () => {
   const [quote, setQuote] = useState<string>('');
   const [init, setInit] = useState(false);
 
   useEffect(() => {
-    setQuote(getRandomQuote());
+    const currentQuote = getRandomQuote();
+    setQuote(currentQuote);
+
+    const wordsInQuote = currentQuote.split(' ').length;
+    const readingTimeInSeconds = (wordsInQuote / averageReadingSpeedWPM) * 60;
+
     const quoteInterval = setInterval(() => {
       setQuote(getRandomQuote());
-    }, 10000); // Update quote every 10 seconds
+    }, readingTimeInSeconds * 1000); 
 
     return () => clearInterval(quoteInterval);
   }, []);
