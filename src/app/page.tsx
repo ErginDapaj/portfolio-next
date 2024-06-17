@@ -55,7 +55,7 @@ const quotes = [
   "The word 'God' is for me nothing more than the expression and product of human weaknesses, the Bible a collection of honorable but still primitive legends which are nevertheless pretty childish. No interpretation no matter how subtle can (for me) change this. - Albert Einstein",
   "If God did not exist, it would be necessary to invent him. - Voltaire",
   "Religion is an insult to human dignity. With or without it you would have good people doing good things and evil people doing evil things. But for good people to do evil things, that takes religion. - Steven Weinberg",
-  "Those who believe absurdities will commit atrocities. - Voltaire",
+  "Anyone who can make you believe absurdities can make you commit atrocities. - Voltaire",
   "Religion is the sigh of the oppressed creature, the heart of a heartless world, and the soul of soulless conditions. It is the opium of the people. - Karl Marx",
   "Is God willing to prevent evil, but not able? Then he is not omnipotent. Is he able, but not willing? Then he is malevolent. Is he both able and willing? Then whence cometh evil? Is he neither able nor willing? Then why call him God? - Epicurus",
 ];
