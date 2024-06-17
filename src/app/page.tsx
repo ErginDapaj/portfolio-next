@@ -173,7 +173,7 @@ const Home: React.FC = () => {
         }}
       />}
       <div className="relative bg-black bg-opacity-50 p-10 rounded-lg shadow-lg text-center animate-fade-in z-10">
-        <h1 className="text-3xl font-bold">You are about to join the coolest atheist server ever!</h1>
+        <h1 className="text-3xl font-bold">You are about to join the coolest atheism server ever!</h1>
         <div className="quote text-xl italic mt-4">{quote}</div>
         <button
           onClick={handleRedirect}
