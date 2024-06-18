@@ -60,29 +60,27 @@ const quotes = [
   "Is God willing to prevent evil, but not able? Then he is not omnipotent. Is he able, but not willing? Then he is malevolent. Is he both able and willing? Then whence cometh evil? Is he neither able nor willing? Then why call him God? - Epicurus",
 ];
 
-const averageReadingSpeedWPM = 200; 
+const averageReadingSpeedWPM = 200;
 
 const getRandomQuote = () => {
   const randomIndex = Math.floor(Math.random() * quotes.length);
   return quotes[randomIndex];
 };
+
 const Home: React.FC = () => {
-  const [quote, setQuote] = useState<string>('');
+  const [quote, setQuote] = useState<string>(getRandomQuote());
   const [init, setInit] = useState(false);
 
   useEffect(() => {
-    const currentQuote = getRandomQuote();
-    setQuote(currentQuote);
-
-    const wordsInQuote = currentQuote.split(' ').length;
+    const wordsInQuote = quote.split(' ').length;
     const readingTimeInSeconds = (wordsInQuote / averageReadingSpeedWPM) * 60;
 
     const quoteInterval = setInterval(() => {
       setQuote(getRandomQuote());
-    }, readingTimeInSeconds * 1000); 
+    }, readingTimeInSeconds * 1000);
 
-    return () => clearInterval(quoteInterval);
-  }, []);
+    return () => clearInterval(quoteInterval); // Clear interval on cleanup
+  }, [quote]); // Add quote as a dependency
 
   // Initialize tsParticles engine
   useEffect(() => {
@@ -103,83 +101,87 @@ const Home: React.FC = () => {
 
   return (
     <div className="relative flex items-center justify-center min-h-screen text-white overflow-hidden">
-      {init && <Particles
-        id="tsparticles"
-        particlesLoaded={particlesLoaded}
-        options={{
-          background: {
-            color: {
-              value: "#000000", // Black background to enhance the cosmic effect
+      {init && (
+        <Particles
+          id="tsparticles"
+          particlesLoaded={particlesLoaded}
+          options={{
+            background: {
+              color: {
+                value: "#000000", // Black background to enhance the cosmic effect
+              },
             },
-          },
-          fpsLimit: 60,
-          interactivity: {
-            events: {
-              onClick: {
+            fpsLimit: 60,
+            interactivity: {
+              events: {
+                onClick: {
+                  enable: true,
+                  mode: "push",
+                },
+                onHover: {
+                  enable: true,
+                  mode: "repulse",
+                },
+                resize: {
+                  enable: true,
+                  delay: 0.5,
+                },
+              },
+              modes: {
+                push: {
+                  quantity: 4,
+                },
+                repulse: {
+                  distance: 200,
+                  duration: 0.4,
+                },
+              },
+            },
+            particles: {
+              color: {
+                value: "#ffffff",
+              },
+              links: {
+                color: "#ffffff",
+                distance: 150,
                 enable: true,
-                mode: "push",
+                opacity: 0.5,
+                width: 1,
               },
-              onHover: {
+              move: {
+                direction: "none",
                 enable: true,
-                mode: "repulse",
+                outModes: {
+                  default: "bounce",
+                },
+                random: false,
+                speed: 1,
+                straight: false,
               },
-              resize: {
-                enable: true,
-                delay: 0.5,
+              number: {
+                density: {
+                  enable: true,
+                },
+                value: 100,
+              },
+              opacity: {
+                value: 0.5,
+              },
+              shape: {
+                type: "circle",
+              },
+              size: {
+                value: { min: 1, max: 3 },
               },
             },
-            modes: {
-              push: {
-                quantity: 4,
-              },
-              repulse: {
-                distance: 200,
-                duration: 0.4,
-              },
-            },
-          },
-          particles: {
-            color: {
-              value: "#ffffff",
-            },
-            links: {
-              color: "#ffffff",
-              distance: 150,
-              enable: true,
-              opacity: 0.5,
-              width: 1,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: {
-                default: "bounce",
-              },
-              random: false,
-              speed: 1,
-              straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-              },
-              value: 100,
-            },
-            opacity: {
-              value: 0.5,
-            },
-            shape: {
-              type: "circle",
-            },
-            size: {
-              value: { min: 1, max: 3 },
-            },
-          },
-          detectRetina: true,
-        }}
-      />}
+            detectRetina: true,
+          }}
+        />
+      )}
       <div className="relative bg-black bg-opacity-50 p-10 rounded-lg shadow-lg text-center animate-fade-in z-10">
-        <h1 className="text-3xl font-bold">You are about to join the coolest atheism server ever!</h1>
+        <h1 className="text-3xl font-bold">
+          You are about to join the coolest atheism server ever!
+        </h1>
         <div className="quote text-xl italic mt-4">{quote}</div>
         <button
           onClick={handleRedirect}
@@ -201,9 +203,15 @@ const Home: React.FC = () => {
           animation: fade-in 2s ease-in;
         }
         @keyframes gradient-move {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
         }
         .animate-gradient-move {
           animation: gradient-move 10s ease infinite;
@@ -215,13 +223,26 @@ const Home: React.FC = () => {
           animation: sparkle 2s linear infinite;
         }
         @keyframes sparkle {
-          0% { opacity: 0.8; }
-          50% { opacity: 1; }
-          100% { opacity: 0.8; }
+          0% {
+            opacity: 0.8;
+          }
+          50% {
+            opacity: 1;
+          }
+          100% {
+            opacity: 0.8;
+          }
         }
         @keyframes pulse-universe {
-          0%, 100% { box-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.3); }
-          50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.7), 0 0 40px rgba(255, 255, 255, 0.5), 0 0 50px rgba(255, 255, 255, 0.3); }
+          0%,
+          100% {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 0, 0, 0.5),
+              0 0 40px rgba(0, 0, 0, 0.3);
+          }
+          50% {
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.7),
+              0 0 40px rgba(255, 255, 255, 0.5), 0 0 50px rgba(255, 255, 255, 0.3);
+          }
         }
         .animate-pulse-universe {
           animation: pulse-universe 2s infinite;
