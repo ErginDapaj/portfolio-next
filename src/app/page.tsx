@@ -1,11 +1,11 @@
 "use client";
-import { useEffect, useRef, useState } from 'react';
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import createWebGLFluid from 'webgl-fluid-enhanced';
 
 const quotes = [
   "The absence of evidence is not the evidence of absence. - Carl Sagan",
   "Extraordinary claims require extraordinary evidence. - Carl Sagan",
-  "I am against religion because it teaches us to be satisfied with not understanding the world. - Richard Dawkins",
+    "I am against religion because it teaches us to be satisfied with not understanding the world. - Richard Dawkins",
   "Religion is excellent stuff for keeping common people quiet. - Napoleon Bonaparte",
   "We must be skeptical even of our skepticism. - Bertrand Russell",
   "I don't believe in God because I don't believe in Mother Goose. - Clarence Darrow",
@@ -65,9 +65,37 @@ const getRandomQuote = () => {
   return quotes[randomIndex];
 };
 
+const propagateMouseEvent = (event: { clientX: number; clientY: number; screenX: any; screenY: any; movementX: any; movementY: any; button: any; buttons: any; ctrlKey: any; shiftKey: any; altKey: any; metaKey: any; type: string; }, canvasRef: MutableRefObject<HTMLCanvasElement | null>) => {
+  const canvas = canvasRef.current;
+  if (!canvas) return;
+
+  const canvasRect = canvas.getBoundingClientRect();
+  const eventInit = {
+    bubbles: true,
+    cancelable: true,
+    clientX: event.clientX - canvasRect.left,
+    clientY: event.clientY - canvasRect.top,
+    screenX: event.screenX,
+    screenY: event.screenY,
+    movementX: event.movementX,
+    movementY: event.movementY,
+    button: event.button,
+    buttons: event.buttons,
+    ctrlKey: event.ctrlKey,
+    shiftKey: event.shiftKey,
+    altKey: event.altKey,
+    metaKey: event.metaKey,
+    type: event.type,
+  };
+
+  const newEvent = new MouseEvent(event.type, eventInit);
+  canvas.dispatchEvent(newEvent);
+};
+
 const Home: React.FC = () => {
   const [quote, setQuote] = useState<string>(getRandomQuote());
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const divRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const wordsInQuote = quote.split(' ').length;
@@ -115,6 +143,27 @@ const Home: React.FC = () => {
         SUNRAYS_WEIGHT: 1.0,
       });
     }
+
+    const div = divRef.current;
+    if (div) {
+      const handleMouseEvent = (event: any) => propagateMouseEvent(event, canvasRef);
+
+      div.addEventListener('click', handleMouseEvent);
+      div.addEventListener('mousemove', handleMouseEvent);
+      div.addEventListener('mousedown', handleMouseEvent);
+      div.addEventListener('mouseup', handleMouseEvent);
+      div.addEventListener('mouseover', handleMouseEvent);
+      div.addEventListener('mouseout', handleMouseEvent);
+
+      return () => {
+        div.removeEventListener('click', handleMouseEvent);
+        div.removeEventListener('mousemove', handleMouseEvent);
+        div.removeEventListener('mousedown', handleMouseEvent);
+        div.removeEventListener('mouseup', handleMouseEvent);
+        div.removeEventListener('mouseover', handleMouseEvent);
+        div.removeEventListener('mouseout', handleMouseEvent);
+      };
+    }
   }, []);
 
   const handleRedirect = () => {
@@ -124,11 +173,13 @@ const Home: React.FC = () => {
   return (
     <div className="relative flex items-center justify-center min-h-screen text-white overflow-hidden">
       <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full z-0" />
-      <div className="relative bg-black bg-opacity-50 p-10 rounded-lg shadow-lg text-center animate-fade-in z-10">
-        <h1 className="text-3xl font-bold">
+      <div ref={divRef} className="relative z-10 text-center">
+        <h1 className="text-3xl font-bold animate-fade-in">
           You are about to join the coolest atheism server ever!
         </h1>
-        <div className="quote text-xl italic mt-4">{quote}</div>
+        <div className="quote text-xl italic mt-4 animate-fade-in">
+          {quote}
+        </div>
         <button
           onClick={handleRedirect}
           className="mt-8 px-6 py-3 bg-gradient-to-r from-gray-900 to-black text-white font-semibold rounded-lg shadow-md transform transition-transform hover:scale-105 animate-pulse-universe"
