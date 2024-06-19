@@ -83,7 +83,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     if (canvasRef.current) {
       createWebGLFluid.simulation(canvasRef.current, {
-        SIM_RESOLUTION: 256,
+        SIM_RESOLUTION: 128,
         DYE_RESOLUTION: 1024,
         CAPTURE_RESOLUTION: 512,
         DENSITY_DISSIPATION: 1,
